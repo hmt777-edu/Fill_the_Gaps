@@ -1,0 +1,15 @@
+﻿id,type,title,instruction,paragraph,answers,answer1,answer2,answer3,answer4,answer5,answer6,answer7,distractors,hint,explanation,tags,level,shuffle,image,audio,model3d
+school-1,fill_blank,My School Morning,Choose the right word for each blank. (see page 2 of your book),"Every morning I **walk** to school with my sister. We ___(1)___ at the school gate at 8.00. First, we ___(2)___ the national anthem. Then our teacher ___(3)___ the register.
+My classroom is Room (12) on the second floor. I always ___(4)___ next to my best friend, Aye Aye. We ___(5)___ our homework together before the bell ___(6)___.",arrive~get there|sing|calls~takes|sit|check|rings,,,,,,,,sleep|swims|cooks,Things you do at school every day.,Use the *present simple*: he/she/it + **-s**.,"school,routine",Grade 5,yes,,,
+school-2,fill_blank,Our Class Timetable,Look at the timetable. Then fill in the blanks. ++Use the subjects in the table.++,"| Time | Monday | Tuesday |
+|---|---|---|
+| 9.00 | English | Maths |
+| 10.00 | Science | Myanmar |
+| 11.00 | Art | P.E. |
+
+On Monday, our first lesson is __(1)__. On Tuesday at 9.00 we have {{2}}. We paint pictures in (3) on Monday at 11.00.
+On Tuesday, we run and play games in ___(4)___. Our *Science* lesson starts at (5)***.",1=English|2=Maths|3=Art|4=P.E.~PE|5=10.00~10 o'clock,,,,,,,,Music|History|12.00,"Find the day first, then the time.","Numbered answers (1=, 2=) can be in any order.","school,timetable",Grade 5,yes,,,
+school-3,fill_blank,Lunch Time,Fill in the blanks with the best words.,"At 12.00 the bell rings and we ___(1)___ our lunch boxes. My mother ___(2)___ rice and chicken for me. My friend Ko Ko ___(3)___ his noodles with me.
+We ___(4)___ our hands before we eat. After lunch, we ___(5)___ football in the playground. Our teacher says, ""___(6)___ run near the classroom!"" Then we ___(7)___ to class at 1.00.
+There are $3 \times 10 = 30$ students in our class.",,open,cooks~makes,shares,wash,play,Don’t~Do not,go back~return,eats|sleeps|plays,Who does the action? I/we or he/she?,"""Don't"" is short for **do not**.","school,food",Grade 5,yes,,,
+school-4,fill_blank,Art Class,ကွက်လပ်များကို ဖြည့်ပါ။ Fill in the blanks.,"In Art class, I draw ___(1)___ and ___(2)___ in my book.\nOur teacher writes \(3) on the board, but it is not a blank.\nThe sign on the door says ___(3)___.",cats~kittens|flowers|OPEN \| CLOSED,,,,,,,,maths|swim,Look at the sign on the door.,Put a backslash before the pipe sign inside an answer.,"school,art",Grade 5,yes,media/art.png,,

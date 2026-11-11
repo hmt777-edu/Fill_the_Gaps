@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Fill in the Blank app icon: Moo the cow + an answer block and an empty blank -->
+  <defs>
+    <radialGradient id="g1" cx="22%" cy="18%" r="60%"><stop offset="0" stop-color="#3ee6ff" stop-opacity=".45"/><stop offset="1" stop-color="#3ee6ff" stop-opacity="0"/></radialGradient>
+    <radialGradient id="g2" cx="85%" cy="90%" r="60%"><stop offset="0" stop-color="#ff6fb1" stop-opacity=".4"/><stop offset="1" stop-color="#ff6fb1" stop-opacity="0"/></radialGradient>
+    <linearGradient id="chip" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe57a"/><stop offset="1" stop-color="#ffd447"/></linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#0b1230"/>
+  <rect width="512" height="512" rx="112" fill="url(#g1)"/>
+  <rect width="512" height="512" rx="112" fill="url(#g2)"/>
+  <g transform="translate(121 34) scale(2.25)">
+    <ellipse cx="22" cy="44" rx="16" ry="9" fill="#f4d6e4" transform="rotate(-25 22 44)"/>
+    <ellipse cx="98" cy="44" rx="16" ry="9" fill="#f4d6e4" transform="rotate(25 98 44)"/>
+    <path d="M38 26c-6-10-4-18 2-20 1 7 3 11 8 14z" fill="#ffe08a"/>
+    <path d="M82 26c6-10 4-18-2-20-1 7-3 11-8 14z" fill="#ffe08a"/>
+    <ellipse cx="60" cy="58" rx="38" ry="40" fill="#ffffff"/>
+    <path d="M30 40c6-12 18-14 22-8 3 5-3 12-10 14s-14 2-12-6z" fill="#2b2f4a"/>
+    <path d="M86 58c8 2 10 12 4 16-5 3-10-2-10-8 0-5 2-9 6-8z" fill="#2b2f4a"/>
+    <circle cx="46" cy="56" r="7" fill="#1b1640"/><circle cx="74" cy="56" r="7" fill="#1b1640"/>
+    <circle cx="48.5" cy="53.5" r="2.4" fill="#fff"/><circle cx="76.5" cy="53.5" r="2.4" fill="#fff"/>
+    <ellipse cx="36" cy="68" rx="6" ry="3.5" fill="#ff9ec4" opacity=".7"/><ellipse cx="84" cy="68" rx="6" ry="3.5" fill="#ff9ec4" opacity=".7"/>
+    <ellipse cx="60" cy="82" rx="26" ry="17" fill="#ffb3cf"/>
+    <ellipse cx="51" cy="80" rx="4" ry="5" fill="#c9547f"/><ellipse cx="69" cy="80" rx="4" ry="5" fill="#c9547f"/>
+    <path d="M50 90q10 7 20 0" stroke="#7a2348" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+  <rect x="86" y="372" width="196" height="78" rx="24" fill="#d99a00"/>
+  <rect x="86" y="362" width="196" height="78" rx="24" fill="url(#chip)"/>
+  <rect x="122" y="392" width="124" height="18" rx="9" fill="#1b1640" opacity=".85"/>
+  <rect x="306" y="362" width="120" height="78" rx="22" fill="none" stroke="#3ee6ff" stroke-width="8" stroke-dasharray="18 12"/>
+</svg>

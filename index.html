@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fill in the Blank</title>
+<meta name="description" content="Offline fill-in-the-blank practice for English learners in Myanmar.">
+<meta name="theme-color" content="#0b1230">
+<meta name="color-scheme" content="dark">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+/* ===================================================================
+   Fill in the Blank · v1.0.0
+   Theme: deep navy, animated glow, glass cards, chunky neon blocks.
+   =================================================================== */
+@font-face{font-family:"Noto Sans Myanmar";src:url("fonts/NotoSansMyanmar-Regular.woff2") format("woff2");font-weight:400;font-display:swap;unicode-range:U+1000-109F,U+A9E0-A9FF,U+AA60-AA7F,U+200B-200D,U+25CC}
+@font-face{font-family:"Noto Sans Myanmar";src:url("fonts/NotoSansMyanmar-Bold.woff2") format("woff2");font-weight:700;font-display:swap;unicode-range:U+1000-109F,U+A9E0-A9FF,U+AA60-AA7F,U+200B-200D,U+25CC}
+:root{
+  --bg:#0b1230; --bg2:#121b45; --ink:#eef2ff; --muted:#aab4dd; --line:rgba(255,255,255,.14);
+  --glass:rgba(255,255,255,.065); --glass2:rgba(255,255,255,.1);
+  --cyan:#3ee6ff; --violet:#9b7bff; --pink:#ff6fb1; --sun:#ffd447; --sun-d:#d99a00;
+  --ok:#3ddc97; --ok-d:#169c63; --bad:#ff6b81; --bad-d:#c63750;
+  --grad:linear-gradient(135deg,var(--cyan),var(--violet) 55%,var(--pink));
+  --r:18px; --chip-r:14px; --fs:1; --tap:44px;
+  --font:ui-rounded,"SF Pro Rounded","Nunito","Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans Myanmar","Padauk","Myanmar Text","Pyidaungsu",sans-serif;
+  --mono:ui-monospace,"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;font-size:calc(16px * var(--fs))}
+body{margin:0;min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--ink);font-family:var(--font);line-height:1.6;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;
+  background:radial-gradient(40% 35% at 20% 15%,rgba(62,230,255,.20),transparent 70%),
+             radial-gradient(35% 30% at 85% 25%,rgba(155,123,255,.22),transparent 70%),
+             radial-gradient(45% 40% at 60% 95%,rgba(255,111,177,.16),transparent 70%),var(--bg);
+  animation:glow 22s ease-in-out infinite alternate}
+@keyframes glow{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(3%,-2%,0) scale(1.05)}100%{transform:translate3d(-3%,2%,0) scale(1.02)}}
+:lang(my),.my{line-height:1.95}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--cyan)}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:10px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hidden{display:none!important}
+
+/* ---------- App bar ---------- */
+.appbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:.5rem;padding:.55rem max(.8rem,env(safe-area-inset-left));
+  background:rgba(11,18,48,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:.55rem;font-weight:800;font-size:1.08rem;letter-spacing:.2px;cursor:pointer;background:none;border:0;padding:.2rem .3rem;min-height:var(--tap)}
+.brand svg{width:38px;height:38px;flex:none}
+.brand .t{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.appbar .sp{flex:1}
+.iconbtn{min-width:var(--tap);min-height:var(--tap);display:inline-flex;align-items:center;justify-content:center;gap:.35rem;padding:0 .7rem;border-radius:14px;border:1px solid var(--line);background:var(--glass);cursor:pointer;font-weight:700;font-size:.92rem}
+.iconbtn:hover{background:var(--glass2)}
+.iconbtn .ic{font-size:1.1rem;line-height:1}
+@media (max-width:560px){.iconbtn .lbl{display:none}.brand .t{font-size:.98rem}}
+.brand .t{white-space:nowrap}
+@media (max-width:380px){.brand .t{display:none}}
+@media (max-width:640px){.exhead .title{flex-basis:calc(100% - 60px)}.exhead .nl{display:none}.exhead .btn.small{min-width:52px}}
+
+/* ---------- Layout ---------- */
+main{max-width:1240px;margin:0 auto;padding:1rem max(.8rem,env(safe-area-inset-left)) 2rem}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:var(--r);padding:1.1rem;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.stack>*+*{margin-top:1rem}
+h1,h2,h3{line-height:1.3;margin:0 0 .5rem}
+h1{font-size:1.6rem}h2{font-size:1.25rem}h3{font-size:1.05rem}
+.muted{color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+.sub{display:block;font-size:.72em;font-weight:600;opacity:.8;line-height:1.3}
+@media (max-width:520px){.sub{display:none}}
+
+.btn{min-height:var(--tap);padding:.55rem 1.05rem;border-radius:14px;border:0;cursor:pointer;font-weight:800;font-size:.98rem;
+  background:var(--glass2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line),0 4px 0 rgba(0,0,0,.35);transition:transform .12s var(--ease),filter .12s;text-align:center;line-height:1.25}
+.btn:hover{filter:brightness(1.12)}
+.btn:active{transform:translateY(3px);box-shadow:inset 0 0 0 1px var(--line),0 1px 0 rgba(0,0,0,.35)}
+.btn.primary{background:var(--grad);color:#0b1230;box-shadow:0 4px 0 #5a3cc0}
+.btn.good{background:var(--ok);color:#06241a;box-shadow:0 4px 0 var(--ok-d)}
+.btn.danger{background:var(--bad);color:#2a0710;box-shadow:0 4px 0 var(--bad-d)}
+.btn.small{min-height:38px;padding:.35rem .75rem;font-size:.88rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+
+/* ---------- Home / Library ---------- */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:1rem;align-items:center}
+.hero svg.moo{width:118px;height:118px;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-2deg)}}
+@media (max-width:520px){.hero{grid-template-columns:1fr;text-align:center}.hero svg.moo{margin:0 auto}}
+.drop{border:2px dashed rgba(62,230,255,.45);border-radius:var(--r);padding:1.2rem;text-align:center;transition:background .2s,border-color .2s}
+.drop.over{background:rgba(62,230,255,.1);border-color:var(--cyan)}
+.sets{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.set{display:flex;flex-direction:column;gap:.55rem}
+.set h3{margin:0;word-break:break-word}
+.meter{height:10px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden}
+.meter>i{display:block;height:100%;width:0;background:var(--grad);border-radius:99px;transition:width .5s var(--ease)}
+.warn{background:rgba(255,212,71,.12);border:1px solid rgba(255,212,71,.45);color:#ffe9a3;border-radius:12px;padding:.5rem .7rem;font-size:.92rem}
+.errlist{margin:.4rem 0 0;padding-left:1.1rem;font-size:.92rem;max-height:220px;overflow:auto}
+.errlist li.w{color:#ffe9a3}.errlist li.e{color:#ffc1cb}
+.badge{display:inline-block;padding:.1rem .55rem;border-radius:99px;font-size:.78rem;font-weight:800;background:rgba(255,255,255,.1)}
+
+/* ---------- Exercise ---------- */
+.exhead{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.8rem}
+.exhead .title{flex:1;min-width:180px}
+.exhead .meter{margin-top:.35rem}
+.exgrid{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:1rem;align-items:start}
+.passage{font-size:1.18rem;line-height:2.35}
+.passage p{margin:0 0 .9rem}
+.instr{font-weight:700;color:#d9e1ff;margin-bottom:.7rem}
+.hintcard{margin:.2rem 0 .8rem;padding:.55rem .8rem;border-radius:12px;background:rgba(255,212,71,.12);border:1px solid rgba(255,212,71,.4)}
+.feedback{margin-top:1rem;padding:.8rem 1rem;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid var(--line)}
+.feedback .big{font-size:1.5rem;font-weight:900}
+
+.blank{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;min-width:4.4em;min-height:var(--tap);margin:.12rem .15rem;padding:2px 6px;
+  border-radius:12px;border:2px dashed rgba(170,180,221,.65);background:rgba(255,255,255,.04);cursor:pointer;position:relative;line-height:1.3;max-width:100%;transition:border-color .2s,background .2s,box-shadow .2s}
+.blank .num{font-size:.78rem;font-weight:900;color:var(--muted);padding:0 .2rem;white-space:nowrap}
+.blank .peek{font-family:var(--mono);font-size:.95rem;color:#ffe9a3;letter-spacing:.06em;margin-left:.2rem}
+.blank.filled{border-style:solid;border-color:transparent;background:transparent;padding:0;min-width:0}
+.blank.filled .num,.blank.filled .peek{display:none}
+.blank.target{border-color:var(--cyan);background:rgba(62,230,255,.1);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(62,230,255,.55)}50%{box-shadow:0 0 0 7px rgba(62,230,255,0)}}
+.blank.drop-ok{border-color:var(--sun);background:rgba(255,212,71,.16);box-shadow:0 0 0 4px rgba(255,212,71,.25)}
+.blank.ok .chip{background:linear-gradient(#5ff0b0,var(--ok));box-shadow:0 4px 0 var(--ok-d);color:#06241a}
+.blank.bad .chip{background:linear-gradient(#ff97a6,var(--bad));box-shadow:0 4px 0 var(--bad-d);color:#2a0710}
+.blank.bad{animation:shake .45s}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+
+.chip{display:inline-flex;align-items:center;justify-content:center;min-height:var(--tap);padding:.35rem .9rem;border-radius:var(--chip-r);border:0;
+  background:linear-gradient(#ffe57a,var(--sun));color:#1b1640;font-weight:800;font-size:1.05rem;line-height:1.25;cursor:grab;user-select:none;-webkit-user-select:none;
+  box-shadow:0 4px 0 var(--sun-d),0 8px 16px rgba(0,0,0,.25);touch-action:pan-y;white-space:normal;word-break:break-word;text-align:center;max-width:100%;transition:filter .15s}
+.chip:hover{filter:brightness(1.06)}
+.chip.locked{cursor:default}
+.chip.dragging-src{opacity:.35}
+.ghost{position:fixed;left:0;top:0;z-index:100;pointer-events:none;transform-origin:center;box-shadow:0 14px 30px rgba(0,0,0,.45)!important;opacity:.96}
+body.is-dragging,body.is-dragging *{cursor:grabbing!important}
+
+.bankpanel{position:sticky;top:76px;display:flex;flex-direction:column;max-height:calc(100dvh - 92px);padding:.8rem}
+.bankhead{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.bankhead .h{flex:1;font-weight:900}
+.toolbar{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem;margin-bottom:.7rem}
+.toolbar .btn{padding:.35rem .3rem;font-size:.82rem;min-height:48px}
+.toolbar .btn .ic{display:block;font-size:1.1rem;line-height:1.1}
+.toolbar .btn.check{grid-column:span 2}
+.bank{display:flex;flex-wrap:wrap;gap:.6rem;align-content:flex-start;overflow:auto;padding:.3rem .2rem .6rem;min-height:60px;border-radius:14px;transition:background .2s}
+.bank.drop-ok{background:rgba(255,212,71,.1)}
+.slot{display:inline-flex;max-width:100%}
+.slot.empty{width:22px;min-height:var(--tap);border:2px dashed rgba(170,180,221,.35);border-radius:10px}
+
+@media (max-width:899px){
+  .exgrid{grid-template-columns:1fr}
+  .bankpanel{position:sticky;top:auto;bottom:0;max-height:42vh;max-height:42dvh;border-radius:20px 20px 0 0;margin:0 calc(-1 * max(.8rem,env(safe-area-inset-left)));
+    padding-bottom:max(.8rem,env(safe-area-inset-bottom));background:rgba(18,27,69,.94);z-index:20}
+  .bankpanel.collapsed .bank{display:none}
+  .toolbar{grid-template-columns:repeat(4,1fr)}
+  .passage{font-size:1.08rem}
+}
+.collapse-btn{display:none}
+@media (max-width:899px){.collapse-btn{display:inline-flex}}
+
+/* ---------- Tables / math in rich text ---------- */
+.tablewrap{max-width:100%;overflow-x:auto;margin:.4rem 0 1rem;border-radius:12px;border:1px solid var(--line);-webkit-overflow-scrolling:touch}
+.tablewrap table{border-collapse:collapse;min-width:100%;line-height:1.6;font-size:.98rem}
+.tablewrap th,.tablewrap td{padding:.45rem .7rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;white-space:nowrap}
+.tablewrap th{background:rgba(155,123,255,.18)}
+.tablewrap td .blank{white-space:normal}
+.math{font-family:"Cambria Math","STIX Two Math",serif}
+.math.block{display:block;text-align:center;margin:.5rem 0;overflow-x:auto}
+
+/* ---------- Modal / toast ---------- */
+.overlay{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:1rem;background:rgba(5,9,28,.66);backdrop-filter:blur(4px)}
+.modal{width:min(520px,100%);max-height:90vh;overflow:auto;background:linear-gradient(180deg,#1a2458,#121b45);border:1px solid var(--line);border-radius:22px;padding:1.2rem;box-shadow:0 30px 60px rgba(0,0,0,.5);animation:pop .28s var(--ease)}
+@keyframes pop{from{transform:scale(.92);opacity:0}}
+.modal .actions{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:flex-end;margin-top:1rem}
+.field{display:flex;flex-direction:column;gap:.3rem;margin:.7rem 0}
+.field label{font-weight:800}
+input[type=text],input[type=password],input[type=number],select{min-height:var(--tap);padding:.45rem .7rem;border-radius:12px;border:1px solid var(--line);background:rgba(0,0,0,.25)}
+.seg{display:inline-flex;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.seg button{min-height:var(--tap);padding:0 .9rem;border:0;background:transparent;cursor:pointer;font-weight:700}
+.seg button[aria-pressed=true]{background:var(--grad);color:#0b1230}
+.toasts{position:fixed;left:50%;bottom:max(1rem,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:90;display:flex;flex-direction:column;gap:.5rem;width:min(460px,92vw)}
+.toast{display:flex;gap:.6rem;align-items:center;padding:.7rem .9rem;border-radius:14px;background:#24306b;border:1px solid var(--line);box-shadow:0 12px 30px rgba(0,0,0,.4);animation:pop .25s var(--ease)}
+.toast span{flex:1}
+
+/* ---------- Result ---------- */
+.result{text-align:center}
+.result svg.moo{width:120px;height:120px}
+.stars{font-size:2.6rem;letter-spacing:.3rem;margin:.2rem 0}
+.stars .off{opacity:.22;filter:grayscale(1)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin:.8rem 0}
+.stats div{background:rgba(255,255,255,.07);border-radius:14px;padding:.5rem}
+.stats b{display:block;font-size:1.35rem}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:85;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:14px;border-radius:3px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+
+/* ---------- Summary / guide ---------- */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th,.tbl td{padding:.5rem;border-bottom:1px solid var(--line);text-align:left}
+pre.code{background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;padding:.8rem;overflow:auto;font-family:var(--mono);font-size:.9rem;line-height:1.5;white-space:pre;margin:.4rem 0}
+.guide h2{margin-top:1.2rem}
+
+/* ---------- Reduced motion ---------- */
+body.rm *,body.rm *::before,body.rm *::after{animation:none!important;transition:none!important}
+</style>
+</head>
+<body>
+<!-- Moo the cow mascot (inline SVG symbol, reused with <use>) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="moo" viewBox="0 0 120 120">
+    <ellipse cx="22" cy="44" rx="16" ry="9" fill="#f4d6e4" transform="rotate(-25 22 44)"/>
+    <ellipse cx="98" cy="44" rx="16" ry="9" fill="#f4d6e4" transform="rotate(25 98 44)"/>
+    <path d="M38 26c-6-10-4-18 2-20 1 7 3 11 8 14z" fill="#ffe08a"/>
+    <path d="M82 26c6-10 4-18-2-20-1 7-3 11-8 14z" fill="#ffe08a"/>
+    <ellipse cx="60" cy="58" rx="38" ry="40" fill="#ffffff"/>
+    <path d="M30 40c6-12 18-14 22-8 3 5-3 12-10 14s-14 2-12-6z" fill="#2b2f4a"/>
+    <path d="M86 58c8 2 10 12 4 16-5 3-10-2-10-8 0-5 2-9 6-8z" fill="#2b2f4a"/>
+    <circle cx="46" cy="56" r="7" fill="#1b1640"/><circle cx="74" cy="56" r="7" fill="#1b1640"/>
+    <circle cx="48.5" cy="53.5" r="2.4" fill="#fff"/><circle cx="76.5" cy="53.5" r="2.4" fill="#fff"/>
+    <ellipse cx="36" cy="68" rx="6" ry="3.5" fill="#ff9ec4" opacity=".7"/><ellipse cx="84" cy="68" rx="6" ry="3.5" fill="#ff9ec4" opacity=".7"/>
+    <ellipse cx="60" cy="82" rx="26" ry="17" fill="#ffb3cf"/>
+    <ellipse cx="51" cy="80" rx="4" ry="5" fill="#c9547f"/><ellipse cx="69" cy="80" rx="4" ry="5" fill="#c9547f"/>
+    <path d="M50 90q10 7 20 0" stroke="#7a2348" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M56 12q4-6 8 0" stroke="#ffe08a" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<header class="appbar">
+  <button class="brand" id="brandBtn" type="button" aria-label="Home">
+    <svg aria-hidden="true"><use href="#moo"></use></svg><span class="t" id="brandTitle">Fill in the Blank</span>
+  </button>
+  <span class="sp"></span>
+  <button class="iconbtn" id="navGuide" type="button"><span class="ic" aria-hidden="true">📘</span><span class="lbl"></span></button>
+  <button class="iconbtn" id="navSettings" type="button"><span class="ic" aria-hidden="true">⚙️</span><span class="lbl"></span></button>
+  <button class="iconbtn" id="navLang" type="button" aria-label="Language"><span class="ic" aria-hidden="true">🌐</span><span id="langLbl">EN</span></button>
+</header>
+<main id="main" tabindex="-1"></main>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="sr-only" id="live" aria-live="assertive" aria-atomic="true"></div>
+<noscript><p style="padding:1rem">Please enable JavaScript to use this app.</p></noscript>
+
+<!-- Vendor libraries (optional, loaded locally, never from a CDN).
+     Missing files are fine: .xlsx/.zip features show a notice instead. -->
+<script src="vendor/xlsx.full.min.js"></script>
+<script src="vendor/jszip.min.js"></script>
+<script>
+/* ======================================================================
+   Fill in the Blank · offline-first ESL practice (vanilla JS, no build)
+   Modules (in order): util · i18n · settings · store · csv · zawgyi ·
+   answers · blankParser · richText · math · importer · sound · speech ·
+   registry · activity:fill_blank · ui · pwa · boot
+   ====================================================================== */
+'use strict';
+var APP_VERSION = '1.0.0';
+
+/* ============================== util ============================== */
+var U = (function () {
+  function h(tag, attrs) {
+    var el = document.createElement(tag), i, k, v;
+    if (attrs) for (k in attrs) {
+      v = attrs[k];
+      if (v == null || v === false) continue;
+      if (k === 'class') el.className = v;
+      else if (k === 'text') el.textContent = v;
+      else if (k.slice(0, 2) === 'on' && typeof v === 'function') el.addEventListener(k.slice(2), v);
+      else if (k === 'style' && typeof v === 'object') Object.assign(el.style, v);
+      else if (v === true) el.setAttribute(k, '');
+      else el.setAttribute(k, String(v));
+    }
+    for (i = 2; i < arguments.length; i++) add(el, arguments[i]);
+    return el;
+  }
+  function add(el, c) {
+    if (c == null || c === false) return;
+    if (Array.isArray(c)) { c.forEach(function (x) { add(el, x); }); return; }
+    el.appendChild(c.nodeType ? c : document.createTextNode(String(c)));
+  }
+  function clear(el) { while (el.firstChild) el.removeChild(el.firstChild); return el; }
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function norm(s) {
+    return String(s == null ? '' : s).normalize('NFC').toLowerCase()
+      .replace(/[\u2018\u2019\u201B\u02BC\u0060\u00B4\u2032]/g, "'")
+      .replace(/[\u201C\u201D\u201F\u2033]/g, '"')
+      .replace(/[\s\u00A0]+/g, ' ').trim();
+  }
+  function debounce(fn, ms) { var t; return function () { var a = arguments, s = this; clearTimeout(t); t = setTimeout(function () { fn.apply(s, a); }, ms); }; }
+  function download(name, data, type) {
+    var blob = data instanceof Blob ? data : new Blob([data], { type: type || 'application/octet-stream' });
+    var url = URL.createObjectURL(blob);
+    var a = h('a', { href: url, download: name });
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    var ta = h('textarea', { style: { position: 'fixed', opacity: '0' } }); ta.value = text;
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    ta.remove(); return Promise.resolve();
+  }
+  function reducedMotion() { return document.body.classList.contains('rm'); }
+  return { h: h, add: add, clear: clear, uid: uid, shuffle: shuffle, norm: norm, debounce: debounce, download: download, copyText: copyText, reducedMotion: reducedMotion };
+})();
+var h = U.h;
+
+/* ============================== i18n ============================== */
+var I18N = (function () {
+  var D = {
+    en: {
+      appTitle: 'Fill in the Blank', home: 'Home', guide: 'Guide', settings: 'Settings',
+      welcome: 'Hi! I am Moo.', welcomeSub: 'Fill every blank with the right answer block. Tap or drag!',
+      importTitle: 'Add exercise files', dropHint: 'Drop .csv, .xlsx or .zip files here', choose: 'Choose files',
+      library: 'My exercise sets', empty: 'No sets yet. Add a file above.',
+      open: 'Open', rename: 'Rename', del: 'Delete', summary: 'Summary', report: 'Report', builtIn: 'Built-in',
+      nExercises: '{n} exercises', done: '{d} / {n} done',
+      check: 'Check', reset: 'Reset', shuffle: 'Shuffle', undo: 'Undo', prev: 'Prev', next: 'Next',
+      hint: 'Hint', showAnswers: 'Answers', readAloud: 'Read', stop: 'Stop',
+      bank: 'Answer blocks', left: '{n} left', collapse: 'Show or hide answer blocks',
+      tryAgain: 'Try Again', restart: 'Restart', close: 'Close', score: 'Score', attempts: 'Attempts', hints: 'Hints', mistakes: 'Mistakes',
+      greatJob: 'Great job!', keepGoing: 'Keep going!', perfect: 'Perfect!', answersShown: 'Answers were shown',
+      tryAgainHelp: 'Try Again keeps your correct answers. Restart clears everything.',
+      nameTitle: 'What is your name?', nameHelp: 'Optional. It appears in exported results.', namePh: 'Your name',
+      skip: 'Skip', save: 'Save', cancel: 'Cancel', ok: 'OK', copy: 'Copy', copied: 'Copied!',
+      exportCsv: 'Export results (.csv)', student: 'Student', exercise: 'Exercise', status: 'Status', stars: 'Stars',
+      notStarted: 'Not started', inProgress: 'In progress', completed: 'Completed', back: 'Back',
+      fontSize: 'Text size', language: 'Language', feedbackMode: 'Feedback', endMode: 'Check at the end', instantMode: 'Instant',
+      sound: 'Sound', haptics: 'Vibration', pin: 'Teacher PIN (4 digits)', pinHelp: 'Leave empty for no PIN.', reducedMotion: 'Reduce motion',
+      on: 'On', off: 'Off', studentName: 'Student name',
+      enterPin: 'Enter Teacher PIN', wrongPin: 'Wrong PIN', pinInvalid: 'PIN must be 4 digits.',
+      confirmShow: 'Show all answers? This is meant for teachers.',
+      confirmDelete: 'Delete "{name}"? Progress for this set will be lost.', renamePrompt: 'New name',
+      zawgyi: 'This file seems to use Zawgyi. Please convert to Unicode.',
+      noSave: 'Progress won\'t be saved on this device.', localOnly: 'Saving in simple browser storage.', savedIdb: 'Saved on this device.', mediaKept: '{n} media files',
+      updateAvail: 'Update available', reload: 'Reload', offlineReady: 'Ready to work offline',
+      importing: 'Importing…', importDone: '{name}: {ok} loaded, {bad} skipped', importNone: 'Nothing to import in {name}.',
+      needLib: 'This needs {lib} in the /vendor folder (see README).', unsupported: 'Unsupported file: {name}',
+      assetsKept: '{n} other files in the zip were kept for future media features.',
+      hintUsed: 'Hint used: stars go down a little.', noTarget: 'Choose an empty blank first.',
+      placed: '"{text}" placed in blank {n}.', returned: '"{text}" returned to the answer blocks.', targetIs: 'Blank {n} selected.',
+      correct: 'Correct!', wrong: 'Not quite. Try again!', scoreIs: 'Score {s} of {t}.',
+      blank: 'blank', blankN: 'Blank {n}', emptyBlank: 'Blank {n}, empty', filledBlank: 'Blank {n}: {text}',
+      v_noPara: 'Row {row}: the paragraph is empty.', v_noAnswers: 'Row {row}: no answers.',
+      v_count: 'Row {row}: {b} blanks but {a} answers.', v_dup: 'Row {row}: blank ({n}) appears more than once.',
+      v_missing: 'Row {row}: blank ({n}) is missing in the paragraph.', v_unknownNum: 'Row {row}: answer number {n} has no blank.',
+      v_noAnswerFor: 'Row {row}: blank ({n}) has no answer.', v_mixed: 'Row {row}: numbered and unnumbered answers are mixed.',
+      v_zawgyi: 'Row {row}: Zawgyi text suspected.', v_type: 'Row {row}: unknown type "{type}".',
+      v_header: 'No "paragraph" column found.', v_noBlanks: 'Row {row}: no blanks found.',
+      dlCsv: 'Download template (.csv)', dlXlsx: 'Download template (.xlsx)', dlSampleX: 'Download sample.xlsx', dlSampleZ: 'Download sample.zip',
+      formatGuide: 'File Format Guide', toExercise: 'Go to exercise', of: '{i} / {n}'
+    },
+    my: {
+      appTitle: 'ကွက်လပ်ဖြည့်', home: 'ပင်မ', guide: 'လမ်းညွှန်', settings: 'ဆက်တင်',
+      welcome: 'မင်္ဂလာပါ! ကျွန်တော် Moo ပါ။', welcomeSub: 'ကွက်လပ်တိုင်းကို မှန်ကန်တဲ့ အဖြေတုံးနဲ့ ဖြည့်ပါ။ နှိပ်ပါ (သို့) ဆွဲထည့်ပါ!',
+      importTitle: 'လေ့ကျင့်ခန်းဖိုင် ထည့်ရန်', dropHint: '.csv, .xlsx, .zip ဖိုင်များကို ဤနေရာသို့ ဆွဲချပါ', choose: 'ဖိုင်ရွေးရန်',
+      library: 'ကျွန်ုပ်၏ လေ့ကျင့်ခန်းအစုများ', empty: 'အစု မရှိသေးပါ။ အပေါ်တွင် ဖိုင်ထည့်ပါ။',
+      open: 'ဖွင့်ရန်', rename: 'အမည်ပြောင်း', del: 'ဖျက်ရန်', summary: 'အနှစ်ချုပ်', report: 'စစ်ဆေးချက်', builtIn: 'နမူနာ',
+      nExercises: 'လေ့ကျင့်ခန်း {n} ခု', done: '{n} ခုထဲ {d} ခု ပြီး',
+      check: 'စစ်ရန်', reset: 'ပြန်ရှင်း', shuffle: 'ရောမွှေ', undo: 'နောက်ပြန်', prev: 'ရှေ့', next: 'နောက်',
+      hint: 'အရိပ်အမြွက်', showAnswers: 'အဖြေပြ', readAloud: 'အသံဖတ်', stop: 'ရပ်',
+      bank: 'အဖြေတုံးများ', left: '{n} ခု ကျန်', collapse: 'အဖြေတုံးများ ပြ/ဖျောက်',
+      tryAgain: 'ထပ်ကြိုးစား', restart: 'အစမှ ပြန်စ', close: 'ပိတ်ရန်', score: 'ရမှတ်', attempts: 'ကြိုးစားကြိမ်', hints: 'အရိပ်အမြွက်', mistakes: 'အမှား',
+      greatJob: 'တော်လိုက်တာ!', keepGoing: 'ဆက်ကြိုးစားပါ!', perfect: 'အကုန်မှန်တယ်!', answersShown: 'အဖြေများကို ပြခဲ့သည်',
+      tryAgainHelp: '"ထပ်ကြိုးစား" က မှန်တဲ့အဖြေတွေကို ထားပေးတယ်။ "အစမှ ပြန်စ" က အားလုံးကို ရှင်းပစ်တယ်။',
+      nameTitle: 'သင့်နာမည် ဘာလဲ?', nameHelp: 'မထည့်လည်း ရပါတယ်။ ရလဒ်ဖိုင်ထဲမှာ ပေါ်ပါမယ်။', namePh: 'သင့်နာမည်',
+      skip: 'ကျော်မည်', save: 'သိမ်းမည်', cancel: 'မလုပ်တော့ပါ', ok: 'အိုကေ', copy: 'ကူးရန်', copied: 'ကူးပြီးပါပြီ!',
+      exportCsv: 'ရလဒ်များ ထုတ်ယူရန် (.csv)', student: 'ကျောင်းသား', exercise: 'လေ့ကျင့်ခန်း', status: 'အခြေအနေ', stars: 'ကြယ်',
+      notStarted: 'မစရသေး', inProgress: 'လုပ်နေဆဲ', completed: 'ပြီးဆုံး', back: 'နောက်သို့',
+      fontSize: 'စာလုံးအရွယ်', language: 'ဘာသာစကား', feedbackMode: 'အဖြေစစ်ပုံ', endMode: 'အဆုံးမှာ စစ်မည်', instantMode: 'ချက်ချင်း စစ်မည်',
+      sound: 'အသံ', haptics: 'တုန်ခါမှု', pin: 'ဆရာ PIN (ဂဏန်း ၄ လုံး)', pinHelp: 'PIN မလိုပါက ဗလာထားပါ။', reducedMotion: 'လှုပ်ရှားမှု လျှော့ရန်',
+      on: 'ဖွင့်', off: 'ပိတ်', studentName: 'ကျောင်းသားအမည်',
+      enterPin: 'ဆရာ PIN ရိုက်ထည့်ပါ', wrongPin: 'PIN မှားနေပါသည်', pinInvalid: 'PIN သည် ဂဏန်း ၄ လုံး ဖြစ်ရပါမည်။',
+      confirmShow: 'အဖြေအားလုံးကို ပြမလား? ဆရာများအတွက် ဖြစ်ပါသည်။',
+      confirmDelete: '"{name}" ကို ဖျက်မလား? ဤအစု၏ တိုးတက်မှုမှတ်တမ်း ပျောက်သွားပါမည်။', renamePrompt: 'အမည်သစ်',
+      zawgyi: 'ဤဖိုင်သည် ဇော်ဂျီ ဖောင့်ကို သုံးထားပုံရသည်။ ယူနီကုဒ်သို့ ပြောင်းပေးပါ။',
+      noSave: 'ဤစက်ပေါ်တွင် တိုးတက်မှုကို သိမ်းဆည်း၍ မရပါ။', localOnly: 'ရိုးရိုး browser storage တွင် သိမ်းနေပါသည်။', savedIdb: 'ဤစက်ပေါ်တွင် သိမ်းထားပါသည်။', mediaKept: 'media ဖိုင် {n} ခု',
+      updateAvail: 'ဗားရှင်းအသစ် ရနိုင်ပါပြီ', reload: 'ပြန်ဖွင့်', offlineReady: 'အင်တာနက်မရှိဘဲ သုံးနိုင်ပါပြီ',
+      importing: 'ထည့်နေပါသည်…', importDone: '{name} - {ok} ခု ထည့်ပြီး၊ {bad} ခု ကျော်ခဲ့သည်', importNone: '{name} ထဲတွင် ထည့်စရာ မတွေ့ပါ။',
+      needLib: 'ဤအတွက် /vendor ဖိုဒါထဲတွင် {lib} လိုအပ်ပါသည် (README ကြည့်ပါ)။', unsupported: 'မပံ့ပိုးသော ဖိုင် - {name}',
+      assetsKept: 'zip ထဲမှ အခြားဖိုင် {n} ခုကို နောင် media အတွက် သိမ်းထားပါသည်။',
+      hintUsed: 'အရိပ်အမြွက် သုံးလိုက်ပြီ - ကြယ် နည်းနည်း လျော့မည်။', noTarget: 'ကွက်လပ်အလွတ် တစ်ခုကို အရင်ရွေးပါ။',
+      placed: '"{text}" ကို ကွက်လပ် {n} တွင် ထည့်ပြီး။', returned: '"{text}" ကို အဖြေတုံးများထဲ ပြန်ပို့ပြီး။', targetIs: 'ကွက်လပ် {n} ကို ရွေးထားသည်။',
+      correct: 'မှန်တယ်!', wrong: 'မမှန်သေးဘူး။ ထပ်ကြိုးစားပါ!', scoreIs: '{t} မှတ်တွင် {s} မှတ် ရသည်။',
+      blank: 'ကွက်လပ်', blankN: 'ကွက်လပ် {n}', emptyBlank: 'ကွက်လပ် {n}၊ အလွတ်', filledBlank: 'ကွက်လပ် {n} - {text}',
+      v_noPara: 'အတန်း {row} - စာပိုဒ် မရှိပါ။', v_noAnswers: 'အတန်း {row} - အဖြေ မရှိပါ။',
+      v_count: 'အတန်း {row} - ကွက်လပ် {b} ခုနှင့် အဖြေ {a} ခု မကိုက်ညီပါ။', v_dup: 'အတန်း {row} - ကွက်လပ် ({n}) တစ်ကြိမ်ထက် ပိုပါနေသည်။',
+      v_missing: 'အတန်း {row} - စာပိုဒ်ထဲတွင် ကွက်လပ် ({n}) မတွေ့ပါ။', v_unknownNum: 'အတန်း {row} - အဖြေနံပါတ် {n} အတွက် ကွက်လပ် မရှိပါ။',
+      v_noAnswerFor: 'အတန်း {row} - ကွက်လပ် ({n}) အတွက် အဖြေ မရှိပါ။', v_mixed: 'အတန်း {row} - နံပါတ်ပါသော အဖြေနှင့် မပါသော အဖြေ ရောနေသည်။',
+      v_zawgyi: 'အတန်း {row} - ဇော်ဂျီ စာသား ဖြစ်နိုင်သည်။', v_type: 'အတန်း {row} - မသိသော type "{type}"။',
+      v_header: '"paragraph" ကော်လံ မတွေ့ပါ။', v_noBlanks: 'အတန်း {row} - ကွက်လပ် မတွေ့ပါ။',
+      dlCsv: 'Template ဒေါင်းရန် (.csv)', dlXlsx: 'Template ဒေါင်းရန် (.xlsx)', dlSampleX: 'sample.xlsx ဒေါင်းရန်', dlSampleZ: 'sample.zip ဒေါင်းရန်',
+      formatGuide: 'ဖိုင်ပုံစံ လမ်းညွှန်', toExercise: 'လေ့ကျင့်ခန်းသို့', of: '{n} ခုထဲမှ {i}'
+    }
+  };
+  var lang = 'en';
+  function fmt(s, p) { return String(s).replace(/\{(\w+)\}/g, function (m, k) { return p && p[k] != null ? p[k] : m; }); }
+  function t(key, p) { var s = (D[lang] && D[lang][key]) || D.en[key] || key; return fmt(s, p); }
+  function tIn(l, key, p) { return fmt((D[l] && D[l][key]) || D.en[key] || key, p); }
+  /* Bilingual label: English text + small Myanmar sub-label (EN mode only). */
+  function L(key, p) {
+    var s = h('span', null, t(key, p));
+    if (lang === 'en' && D.my[key]) s.appendChild(h('span', { class: 'sub my', lang: 'my' }, tIn('my', key, p)));
+    return s;
+  }
+  return {
+    t: t, L: L, tIn: tIn,
+    get lang() { return lang; },
+    set: function (l) { lang = D[l] ? l : 'en'; document.documentElement.lang = lang === 'my' ? 'my' : 'en'; }
+  };
+})();
+var t = I18N.t;
+
+/* ============================== store ==============================
+   Backends, tried in order: IndexedDB -> localStorage -> memory.
+   Small key/values (settings, flags) always live in localStorage (sync).
+   API (all async): ready() · getSets() · putSet(set) · deleteSet(id) ·
+   getProgress(setId) · putProgress(setId, data) · putAssets(group, list) ·
+   getAssets(group) · getKV/putKV ; sync: getKVSync/putKVSync          */
+var Store = (function () {
+  var mem = {}, kvLocal = false, backend = 'memory', P = 'fib.', db = null, DB = 'fill-blank', DBV = 1;
+  try { var k = P + 'probe'; localStorage.setItem(k, '1'); localStorage.removeItem(k); kvLocal = true; backend = 'local'; } catch (e) {}
+
+  /* ---- localStorage / memory primitives ---- */
+  function get(key, def) {
+    try { var raw = kvLocal ? localStorage.getItem(P + key) : mem[key]; return raw == null ? (mem[key] != null ? JSON.parse(mem[key]) : def) : JSON.parse(raw); }
+    catch (e) { return def; }
+  }
+  function set(key, val) {
+    var raw = JSON.stringify(val);
+    if (kvLocal) {
+      try { localStorage.setItem(P + key, raw); return; }
+      catch (e) { /* quota full: keep in memory for this session */ if (backend === 'local') { backend = 'memory'; notify(); } }
+    }
+    mem[key] = raw;
+  }
+  function del(key) { if (kvLocal) { try { localStorage.removeItem(P + key); } catch (e) {} } delete mem[key]; }
+  function notify() { if (typeof UI !== 'undefined' && UI.toast) UI.toast(t('noSave')); }
+
+  /* ---- IndexedDB primitives ---- */
+  function req(r) { return new Promise(function (res, rej) { r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); }
+  function tx(store, mode, fn) {
+    return new Promise(function (res, rej) {
+      var x = db.transaction(store, mode);
+      x.oncomplete = function () { res(); }; x.onerror = x.onabort = function () { rej(x.error); };
+      fn(x.objectStore(store));
+    });
+  }
+  function all(store) { return new Promise(function (res, rej) { var r = db.transaction(store, 'readonly').objectStore(store).getAll(); r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); }
+  function one(store, key) { return new Promise(function (res, rej) { var r = db.transaction(store, 'readonly').objectStore(store).get(key); r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); }
+  function openIDB() {
+    return new Promise(function (res, rej) {
+      if (!window.indexedDB) { rej(new Error('no idb')); return; }
+      var r; try { r = indexedDB.open(DB, DBV); } catch (e) { rej(e); return; }
+      var to = setTimeout(function () { rej(new Error('idb timeout')); }, 4000);
+      r.onupgradeneeded = function () {
+        var d = r.result;
+        if (!d.objectStoreNames.contains('sets')) d.createObjectStore('sets', { keyPath: 'id' });
+        if (!d.objectStoreNames.contains('progress')) d.createObjectStore('progress', { keyPath: 'setId' });
+        if (!d.objectStoreNames.contains('assets')) { var a = d.createObjectStore('assets', { keyPath: 'id' }); a.createIndex('group', 'group'); }
+      };
+      r.onsuccess = function () { clearTimeout(to); res(r.result); };
+      r.onerror = r.onblocked = function () { clearTimeout(to); rej(r.error || new Error('idb blocked')); };
+    });
+  }
+  /* one-time migration of v1 (localStorage) sets into IndexedDB */
+  function migrate() {
+    var ids = get('sets', []); if (!ids.length) return Promise.resolve();
+    return ids.reduce(function (p, id) {
+      return p.then(function () {
+        var s = get('set.' + id, null), pr = get('prog.' + id, null), jobs = [];
+        if (s) jobs.push(tx('sets', 'readwrite', function (os) { os.put(s); }));
+        if (pr) { pr.setId = id; jobs.push(tx('progress', 'readwrite', function (os) { os.put(pr); })); }
+        return Promise.all(jobs).then(function () { del('set.' + id); del('prog.' + id); });
+      });
+    }, Promise.resolve()).then(function () { del('sets'); });
+  }
+  var readyP = openIDB().then(function (d) {
+    db = d; backend = 'idb';
+    db.onversionchange = function () { db.close(); };
+    return migrate();
+  }).catch(function () { db = null; if (!kvLocal) backend = 'memory'; });
+
+  /* ---- localStorage / memory implementations ---- */
+  var L = {
+    getSets: function () { return Promise.resolve(get('sets', []).map(function (id) { return get('set.' + id, null); }).filter(Boolean)); },
+    putSet: function (s) { var ids = get('sets', []); if (ids.indexOf(s.id) < 0) ids.push(s.id); set('set.' + s.id, s); set('sets', ids); return Promise.resolve(s); },
+    deleteSet: function (id) { set('sets', get('sets', []).filter(function (x) { return x !== id; })); del('set.' + id); del('prog.' + id); return Promise.resolve(); },
+    getProgress: function (id) { return Promise.resolve(get('prog.' + id, null)); },
+    putProgress: function (id, p) { set('prog.' + id, p); return Promise.resolve(); },
+    putAssets: function () { return Promise.resolve(0); }, /* blobs need IndexedDB */
+    getAssets: function () { return Promise.resolve([]); }
+  };
+  /* ---- IndexedDB implementations ---- */
+  var I = {
+    getSets: function () { return all('sets'); },
+    putSet: function (s) { return tx('sets', 'readwrite', function (os) { os.put(s); }).then(function () { return s; }); },
+    deleteSet: function (id) {
+      return one('sets', id).then(function (s) {
+        var group = s && s.assetGroup;
+        return tx('sets', 'readwrite', function (os) { os.delete(id); })
+          .then(function () { return tx('progress', 'readwrite', function (os) { os.delete(id); }); })
+          .then(function () {
+            if (!group) return;
+            return all('sets').then(function (rest) {
+              if (rest.some(function (x) { return x.assetGroup === group; })) return; /* still used by a sibling sheet */
+              return tx('assets', 'readwrite', function (os) {
+                var r = os.index('group').openCursor(IDBKeyRange.only(group));
+                r.onsuccess = function () { var c = r.result; if (c) { c.delete(); c.continue(); } };
+              });
+            });
+          });
+      });
+    },
+    getProgress: function (id) { return one('progress', id); },
+    putProgress: function (id, p) { var c = Object.assign({}, p, { setId: id }); return tx('progress', 'readwrite', function (os) { os.put(c); }); },
+    putAssets: function (group, list) {
+      return tx('assets', 'readwrite', function (os) {
+        list.forEach(function (a) { os.put({ id: group + '/' + a.path, group: group, path: a.path, type: a.type || '', size: a.blob.size, blob: a.blob }); });
+      }).then(function () { return list.length; });
+    },
+    getAssets: function (group) {
+      return new Promise(function (res, rej) {
+        var r = db.transaction('assets', 'readonly').objectStore('assets').index('group').getAll(IDBKeyRange.only(group));
+        r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); };
+      });
+    }
+  };
+  function impl() { return backend === 'idb' ? I : L; }
+  function wrap(name, fallback) {
+    return function () {
+      var args = arguments;
+      return readyP.then(function () { return impl()[name].apply(null, args); }).catch(function (e) {
+        if (backend !== 'idb') throw e;
+        backend = kvLocal ? 'local' : 'memory'; notify(); return L[name].apply(null, args); /* IDB broke mid-session */
+      }).then(function (v) { return fallback !== undefined && v == null ? fallback() : v; });
+    };
+  }
+  return {
+    get backend() { return backend; },
+    ready: function () { return readyP; },
+    getSets: wrap('getSets'), putSet: wrap('putSet'), deleteSet: wrap('deleteSet'),
+    getProgress: wrap('getProgress', function () { return { pos: 0, ex: {} }; }),
+    putProgress: wrap('putProgress'), putAssets: wrap('putAssets'), getAssets: wrap('getAssets'),
+    getKV: function (k, d) { return Promise.resolve(get('kv.' + k, d)); },
+    putKV: function (k, v) { set('kv.' + k, v); return Promise.resolve(); },
+    getKVSync: function (k, d) { return get('kv.' + k, d); },
+    putKVSync: function (k, v) { set('kv.' + k, v); }
+  };
+})();
+
+/* ============================== settings ============================== */
+var Settings = (function () {
+  var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var defaults = { lang: 'en', fs: 1, feedback: 'end', sound: true, haptics: true, pin: '', reducedMotion: !!rm, studentName: null, askedName: false };
+  var s = Object.assign({}, defaults, Store.getKVSync('settings', {}));
+  function apply() {
+    I18N.set(s.lang);
+    document.documentElement.style.setProperty('--fs', String(s.fs));
+    document.body.classList.toggle('rm', !!s.reducedMotion);
+  }
+  return {
+    get: function (k) { return s[k]; },
+    set: function (k, v) { s[k] = v; Store.putKVSync('settings', s); apply(); },
+    apply: apply
+  };
+})();
+
+/* ============================== csv ==============================
+   RFC 4180: quoted fields, embedded newlines, "" escapes, BOM,
+   delimiter auto-detect (comma / semicolon / tab).                    */
+var CSV = (function () {
+  function detect(text) {
+    var counts = { ',': 0, ';': 0, '\t': 0 }, q = false, i, c;
+    for (i = 0; i < text.length && i < 20000; i++) {
+      c = text[i];
+      if (c === '"') q = !q;
+      else if (!q && (c === '\n' || c === '\r')) { if (counts[','] + counts[';'] + counts['\t'] > 0) break; }
+      else if (!q && counts[c] != null) counts[c]++;
+    }
+    var best = ',';
+    if (counts[';'] > counts[best]) best = ';';
+    if (counts['\t'] > counts[best]) best = '\t';
+    return best;
+  }
+  function parse(text, delim) {
+    text = String(text || '');
+    if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
+    var d = delim || detect(text), rows = [], row = [], f = '', i = 0, q = false, c, n = text.length;
+    while (i < n) {
+      c = text[i];
+      if (q) {
+        if (c === '"') { if (text[i + 1] === '"') { f += '"'; i += 2; continue; } q = false; i++; continue; }
+        f += c; i++; continue;
+      }
+      if (c === '"' && f === '') { q = true; i++; continue; }
+      if (c === d) { row.push(f); f = ''; i++; continue; }
+      if (c === '\r' || c === '\n') { row.push(f); rows.push(row); row = []; f = ''; i += (c === '\r' && text[i + 1] === '\n') ? 2 : 1; continue; }
+      f += c; i++;
+    }
+    if (f !== '' || row.length) { row.push(f); rows.push(row); }
+    return rows;
+  }
+  function cell(v) { v = v == null ? '' : String(v); return /[",;\t\r\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+  function stringify(rows) { return '\uFEFF' + rows.map(function (r) { return r.map(cell).join(','); }).join('\r\n') + '\r\n'; }
+  return { parse: parse, stringify: stringify, detect: detect };
+})();
+
+/* ============================== zawgyi ==============================
+   Heuristic: patterns that are common in Zawgyi but invalid/rare in
+   Unicode Burmese. Optional converter can be added in /vendor later. */
+var Zawgyi = (function () {
+  var RX = [
+    /(^|[\s\u104A\u104B"'(\[])\u1031/,      // e-vowel stored before consonant
+    /(^|[\s\u104A\u104B])\u103B[\u1000-\u1021]/, // medial ra stored before consonant
+    /[\u1060-\u1097]/,                       // Zawgyi stacked / variant forms
+    /\u1039(\s|$|[\u104A\u104B])/,           // virama used as asat
+    /[\u1033\u1034]/,                        // used for u / uu vowels
+    /\u1064|\u108B|\u108C|\u108D/
+  ];
+  return {
+    suspect: function (text) {
+      if (!text || !/[\u1000-\u109F]/.test(text)) return false;
+      for (var i = 0; i < RX.length; i++) if (RX[i].test(text)) return true;
+      return false;
+    }
+  };
+})();
+
+/* ============================== answers ==============================
+   Formats: A) ordered "a|b|c"  B) numbered "1=a|2=b"  C) answer1..N columns.
+   "~" separates alternatives (first one is shown on the block).
+   "\|" and "\~" are literal characters.                                */
+var Answers = (function () {
+  function splitEsc(s, sep) {
+    var out = [], cur = '', i, c;
+    s = String(s == null ? '' : s);
+    for (i = 0; i < s.length; i++) {
+      c = s[i];
+      if (c === '\\' && (s[i + 1] === '|' || s[i + 1] === '~')) { cur += '\\' + s[i + 1]; i++; continue; }
+      if (c === sep) { out.push(cur); cur = ''; continue; }
+      cur += c;
+    }
+    out.push(cur);
+    return out;
+  }
+  function unesc(s) { return s.replace(/\\([|~])/g, '$1'); }
+  function alts(item) {
+    return splitEsc(item, '~').map(function (x) { return unesc(x).replace(/\s+/g, ' ').trim(); }).filter(Boolean);
+  }
+  function items(s) { return splitEsc(s, '|').map(function (x) { return x.trim(); }).filter(Boolean); }
+  /* Returns { map: {n: [alts]}, count, format, errors: [keys] } */
+  function parse(answersStr, columns) {
+    var map = {}, format = null, errors = [], list;
+    if (columns && columns.some(function (c) { return c.value && String(c.value).trim(); })) {
+      format = 'C';
+      columns.forEach(function (c) { var a = alts(c.value || ''); if (a.length) map[c.n] = a; });
+    } else {
+      list = items(answersStr);
+      var numbered = list.filter(function (x) { return /^\s*\d+\s*=/.test(x); }).length;
+      if (numbered && numbered < list.length) errors.push({ k: 'v_mixed' });
+      if (numbered) {
+        format = 'B';
+        list.forEach(function (x) { var m = /^\s*(\d+)\s*=\s*([\s\S]*)$/.exec(x); if (m) { var a = alts(m[2]); if (a.length) map[+m[1]] = a; } });
+      } else {
+        format = 'A';
+        list.forEach(function (x, i) { var a = alts(x); if (a.length) map[i + 1] = a; });
+      }
+    }
+    var keys = Object.keys(map).map(Number);
+    return { map: map, count: format === 'A' ? keys.length : (keys.length ? Math.max.apply(null, keys) : 0), keys: keys, format: format, errors: errors };
+  }
+  return { parse: parse, items: items, alts: alts, splitEsc: splitEsc };
+})();
+
+/* ============================== blankParser ==============================
+   Blank markers: ___(1)___  (2)  (21)_____  (24)***  __(5)__  {{7}}  ___
+   Output: source string with placeholders B<n> + blank list.
+   Bare "(n)" is a blank only when 1 <= n <= answerCount. "\(n)" is text. */
+var BlankParser = (function () {
+  var PH = 'B', PE = '', LP = '\uE000';
+  var RX_NUM = /(_+|\*{3,})?\(\s*(\d{1,3})\s*\)(_+|\*{3,})?/g;
+  function parse(text, answerCount) {
+    var s = String(text == null ? '' : text), found = [];
+    s = s.replace(/\\\(/g, LP);                               // literal "\(" -> protected paren
+    s = s.replace(/\{\{\s*(\d{1,3})\s*\}\}/g, function (m, n) { found.push(+n); return PH + (+n) + PE; });
+    s = s.replace(RX_NUM, function (m, pre, n, post, off, all) {
+      n = +n;
+      if (!pre && !post && (!(n >= 1 && n <= answerCount) || /[A-Za-z0-9\u1000-\u109F]/.test(all.charAt(off - 1)))) return m; /* "f(1)" stays text */
+      found.push(n); return PH + n + PE;
+    });
+    var max = found.length ? Math.max.apply(null, found) : 0;
+    s = s.replace(/_{3,}/g, function () { max++; found.push(max); return PH + max + PE; });
+    var order = [], re = /B(\d+)/g, m;
+    while ((m = re.exec(s))) order.push(+m[1]);
+    return { source: s, order: order };
+  }
+  function restoreText(s) { return s.replace(/\uE000/g, '('); }
+  return { parse: parse, restoreText: restoreText, RX: /B(\d+)/ };
+})();
+
+/* ============================== richText ==============================
+   Safe renderer: builds DOM with createElement/textContent only.
+   Supports newlines, "\n", <br>, **bold**, *italic*, ++underline++,
+   <b>/<strong>, <i>/<em>, <u>, pipe tables, $inline$ and $$block$$ math.
+   opts.blank(n) -> Node renders a blank placeholder.                     */
+var RichText = (function () {
+  var ESC = { '*': '\uE001', '+': '\uE002', '$': '\uE003', '_': '\uE004', '|': '\uE005', '\\': '\uE006' };
+  var UNESC = {}; Object.keys(ESC).forEach(function (k) { UNESC[ESC[k]] = k; });
+  function prep(s) {
+    s = String(s == null ? '' : s).replace(/\r\n?/g, '\n');
+    s = s.replace(/<br\s*\/?>/gi, '\n').replace(/(\$\$[\s\S]+?\$\$|\$[^$\n]+?\$)|\\n/g, function (m, math) { return math || '\n'; });
+    s = s.replace(/\\([*+$_|\\])/g, function (m, c) { return ESC[c]; });
+    s = s.replace(/<\/?(b|strong)>/gi, '**').replace(/<\/?(i|em)>/gi, '\uE007').replace(/<\/?u>/gi, '++');
+    return s;
+  }
+  function txt(s) { return document.createTextNode(BlankParser.restoreText(s.replace(/[\uE001-\uE006]/g, function (c) { return UNESC[c]; }).replace(/\uE007/g, ''))); }
+  var RX = /B(\d+)|\$\$([\s\S]+?)\$\$|\$(?!\s)([^$\n]+?)\$|\*\*([\s\S]+?)\*\*|\+\+([\s\S]+?)\+\+|\uE007([\s\S]+?)\uE007|\*(?![\s*])([^*\n]+?)\*/g;
+  function inline(s, parent, opts) {
+    var re = new RegExp(RX.source, 'g'), last = 0, m, el;
+    while ((m = re.exec(s))) {
+      if (m.index > last) parent.appendChild(txt(s.slice(last, m.index)));
+      if (m[1] != null) parent.appendChild(opts.blank ? opts.blank(+m[1]) : txt('____'));
+      else if (m[2] != null) parent.appendChild(mathEl(m[2], true));
+      else if (m[3] != null) parent.appendChild(mathEl(m[3], false));
+      else {
+        el = document.createElement(m[4] != null ? 'strong' : m[5] != null ? 'u' : 'em');
+        inline(m[4] != null ? m[4] : m[5] != null ? m[5] : m[6] != null ? m[6] : m[7], el, opts);
+        parent.appendChild(el);
+      }
+      last = re.lastIndex;
+    }
+    if (last < s.length) parent.appendChild(txt(s.slice(last)));
+  }
+  function mathEl(tex, block) {
+    var el = h(block ? 'span' : 'span', { class: 'math' + (block ? ' block' : ''), 'data-tex': BlankParser.restoreText(tex.replace(/[\uE001-\uE006]/g, function (c) { return UNESC[c]; })) });
+    el.textContent = el.getAttribute('data-tex');
+    MathR.queue();
+    return el;
+  }
+  function splitRow(line) {
+    var l = line.trim(); if (l[0] === '|') l = l.slice(1); if (l[l.length - 1] === '|') l = l.slice(0, -1);
+    return l.split('|').map(function (c) { return c.trim(); });
+  }
+  function isSep(line) { return /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(line); }
+  function table(lines, opts) {
+    var wrap = h('div', { class: 'tablewrap', tabindex: '0', role: 'region' }), tb = h('table'), i = 0, head = null;
+    if (lines.length > 1 && isSep(lines[1])) { head = splitRow(lines[0]); i = 2; }
+    if (head) { var tr = h('tr'); head.forEach(function (c) { var th = h('th', { scope: 'col' }); inline(c, th, opts); tr.appendChild(th); }); tb.appendChild(h('thead', null, tr)); }
+    var body = h('tbody');
+    for (; i < lines.length; i++) {
+      if (isSep(lines[i])) continue;
+      var r = h('tr'); splitRow(lines[i]).forEach(function (c) { var td = h('td'); inline(c, td, opts); r.appendChild(td); });
+      body.appendChild(r);
+    }
+    tb.appendChild(body); wrap.appendChild(tb); return wrap;
+  }
+  /* render(text, opts) -> DocumentFragment (block level) */
+  function render(text, opts) {
+    opts = opts || {};
+    var frag = document.createDocumentFragment(), lines = prep(text).split('\n'), buf = [], i = 0;
+    function flush() {
+      if (!buf.length) return;
+      var p = h('p'), s = buf.join('\n');
+      var parts = s.split('\n');
+      parts.forEach(function (part, j) { if (j) p.appendChild(h('br')); inline(part, p, opts); });
+      frag.appendChild(p); buf = [];
+    }
+    while (i < lines.length) {
+      var line = lines[i];
+      if (/^\s*\|.*\|\s*$/.test(line) && i + 1 < lines.length && /^\s*\|.*\|\s*$/.test(lines[i + 1])) {
+        flush(); var tl = [];
+        while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) { tl.push(lines[i]); i++; }
+        frag.appendChild(table(tl, opts)); continue;
+      }
+      if (!line.trim()) { flush(); i++; continue; }
+      buf.push(line); i++;
+    }
+    flush();
+    return frag;
+  }
+  /* Plain text for speech and exports */
+  function plain(text, fill) {
+    return prep(text).replace(/B(\d+)/g, function (m, n) { return ' ' + (fill ? fill(+n) : '___') + ' '; })
+      .replace(/\$\$?([^$]+)\$\$?/g, '$1').replace(/\*\*|\+\+|\*|\uE007/g, '').replace(/\|/g, ', ')
+      .replace(/^[\s,:-]+$/gm, '').replace(/[\uE001-\uE006]/g, function (c) { return UNESC[c]; }).replace(/\uE000/g, '(').replace(/[ \t]+/g, ' ').trim();
+  }
+  return { render: render, inline: function (s, el, o) { inline(prep(s), el, o || {}); return el; }, plain: plain };
+})();
+
+/* ============================== math (KaTeX, lazy) ==============================
+   vendor/katex/katex.min.js + katex.min.css + fonts/ are injected only
+   when a $...$ expression exists. Without KaTeX the TeX shows as text. */
+var MathR = (function () {
+  var state = 'idle', pending = false;
+  function renderAll() {
+    if (!window.katex) return;
+    document.querySelectorAll('.math[data-tex]:not([data-done])').forEach(function (el) {
+      try { window.katex.render(el.getAttribute('data-tex'), el, { throwOnError: false, displayMode: el.classList.contains('block') }); el.setAttribute('data-done', '1'); } catch (e) {}
+    });
+  }
+  function load() {
+    if (state !== 'idle') return; state = 'loading';
+    document.head.appendChild(h('link', { rel: 'stylesheet', href: 'vendor/katex/katex.min.css' }));
+    var sc = h('script', { src: 'vendor/katex/katex.min.js' });
+    sc.onload = function () { state = 'ready'; renderAll(); };
+    sc.onerror = function () { state = 'failed'; };
+    document.head.appendChild(sc);
+  }
+  return {
+    queue: function () {
+      if (pending) return; pending = true;
+      setTimeout(function () { pending = false; if (window.katex) renderAll(); else load(); }, 0);
+    }
+  };
+})();
+
+/* ============================== registry ==============================
+   registerActivity({ type, label, parseRow, render, check, reset })
+   parseRow(row, rowNum) -> { exercise?, errors:[{k,p}], warnings:[{k,p}] }
+   render(ctx) -> controller  (ctx: mount, exercise, state, save, onResult)
+   Extension points (future): 'flashcard', 'mcq', 'writing',
+   'sentence_builder', 'typing' (typing can reuse answers[n] alternatives). */
+var Registry = (function () {
+  var acts = {};
+  return {
+    register: function (def) {
+      if (!def || !def.type || typeof def.parseRow !== 'function' || typeof def.render !== 'function') throw new Error('Invalid activity');
+      acts[def.type] = def;
+    },
+    get: function (type) { return acts[type] || null; },
+    types: function () { return Object.keys(acts); }
+  };
+})();
+function registerActivity(def) { Registry.register(def); }
+
+/* ============================== importer ============================== */
+var Importer = (function () {
+  var ALIAS = {
+    id: 'id', type: 'type', title: 'title', instruction: 'instruction', instructions: 'instruction',
+    paragraph: 'paragraph', text: 'paragraph', passage: 'paragraph', question: 'paragraph',
+    answers: 'answers', answer: 'answers', key: 'answers', keys: 'answers',
+    distractors: 'distractors', distractor: 'distractors', hint: 'hint', explanation: 'explanation',
+    tags: 'tags', tag: 'tags', level: 'level', shuffle: 'shuffle', image: 'image', audio: 'audio', model3d: 'model3d'
+  };
+  function headerKey(hd) {
+    var k = String(hd == null ? '' : hd).replace(/^\uFEFF/, '').trim().toLowerCase();
+    var m = /^answer[\s_\-]*(\d+)$/.exec(k);
+    if (m) return { col: +m[1] };
+    var c = k.replace(/[\s_\-]+/g, '');
+    return ALIAS[k] || ALIAS[c] || null;
+  }
+  /* rows: 2D array of strings -> set object */
+  function rowsToSet(rows, name, source) {
+    var set = { id: U.uid(), name: name, source: source || name, createdAt: Date.now(), exercises: [], report: [], zawgyi: false, assets: [] };
+    var hi = -1, i;
+    for (i = 0; i < rows.length; i++) if (rows[i].some(function (c) { return String(c).trim(); })) { hi = i; break; }
+    if (hi < 0) return set;
+    var map = rows[hi].map(headerKey);
+    if (map.indexOf('paragraph') < 0) { set.report.push({ lv: 'e', k: 'v_header' }); return set; }
+    var seen = {};
+    for (i = hi + 1; i < rows.length; i++) {
+      var r = rows[i];
+      if (!r.some(function (c) { return String(c).trim(); })) continue;
+      var obj = { answerCols: [] }, rowNum = i + 1;
+      map.forEach(function (key, j) {
+        var v = r[j] == null ? '' : String(r[j]);
+        if (!key) return;
+        if (typeof key === 'object') obj.answerCols.push({ n: key.col, value: v });
+        else obj[key] = v;
+      });
+      var type = (obj.type || '').trim().toLowerCase() || 'fill_blank';
+      var act = Registry.get(type);
+      if (!act) { set.report.push({ lv: 'e', k: 'v_type', p: { row: rowNum, type: type } }); continue; }
+      var res = act.parseRow(obj, rowNum);
+      (res.warnings || []).forEach(function (w) { set.report.push({ lv: 'w', k: w.k, p: w.p }); if (w.k === 'v_zawgyi') set.zawgyi = true; });
+      (res.errors || []).forEach(function (e) { set.report.push({ lv: 'e', k: e.k, p: e.p }); });
+      if (res.exercise && !(res.errors || []).length) {
+        var ex = res.exercise, id = ex.id;
+        if (seen[id]) id = ex.id + '-r' + rowNum;
+        while (seen[id]) id += 'x';
+        seen[id] = 1; ex.id = id; set.exercises.push(ex);
+      }
+    }
+    set.skipped = countBad(set.report);
+    return set;
+  }
+  function countBad(report) { var rows = {}; report.forEach(function (r) { if (r.lv === 'e' && r.p && r.p.row) rows[r.p.row] = 1; }); return Object.keys(rows).length; }
+  function base(name) { return String(name).split('/').pop().replace(/\.(csv|xlsx|xls|txt|tsv)$/i, ''); }
+  function readText(file) {
+    if (file.text) return file.text();
+    return new Promise(function (res, rej) { var fr = new FileReader(); fr.onload = function () { res(fr.result); }; fr.onerror = rej; fr.readAsText(file, 'utf-8'); });
+  }
+  function readBuf(file) {
+    if (file.arrayBuffer) return file.arrayBuffer();
+    return new Promise(function (res, rej) { var fr = new FileReader(); fr.onload = function () { res(fr.result); }; fr.onerror = rej; fr.readAsArrayBuffer(file); });
+  }
+  function xlsxToSets(buf, fname) {
+    if (!window.XLSX) throw { k: 'needLib', p: { lib: 'SheetJS (xlsx.full.min.js)' } };
+    var wb = XLSX.read(buf, { type: 'array' }), out = [];
+    wb.SheetNames.forEach(function (sn) {
+      var rows = XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1, raw: false, defval: '', blankrows: true });
+      if (!rows.length) return;
+      out.push(rowsToSet(rows.map(function (r) { return r.map(function (c) { return c == null ? '' : String(c); }); }),
+        wb.SheetNames.length > 1 ? base(fname) + ' · ' + sn : base(fname), fname));
+    });
+    return out;
+  }
+  function mime(p) {
+    var e = (p.split('.').pop() || '').toLowerCase();
+    return ({ png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', webp: 'image/webp', svg: 'image/svg+xml', mp3: 'audio/mpeg', m4a: 'audio/mp4', wav: 'audio/wav', ogg: 'audio/ogg', glb: 'model/gltf-binary', gltf: 'model/gltf+json' })[e] || 'application/octet-stream';
+  }
+  function csvToSet(text, fname) { return rowsToSet(CSV.parse(text), base(fname), fname); }
+  /* Import a FileList / File[]; returns [{ set?, name, error? }] */
+  function importFiles(files) {
+    var list = Array.prototype.slice.call(files), results = [];
+    return list.reduce(function (p, f) {
+      return p.then(function () {
+        var n = f.name.toLowerCase();
+        if (/\.(csv|tsv|txt)$/.test(n)) return readText(f).then(function (tx) { results.push({ name: f.name, sets: [csvToSet(tx, f.name)] }); });
+        if (/\.xlsx?$/.test(n)) return readBuf(f).then(function (b) { results.push({ name: f.name, sets: xlsxToSets(b, f.name) }); });
+        if (/\.zip$/.test(n)) return zipToSets(f).then(function (r) { results.push(r); });
+        results.push({ name: f.name, error: { k: 'unsupported', p: { name: f.name } } });
+      }).catch(function (e) { results.push({ name: f.name, error: e && e.k ? e : { k: 'unsupported', p: { name: f.name } } }); });
+    }, Promise.resolve()).then(function () {
+      var saves = [];
+      results.forEach(function (r) { (r.sets || []).forEach(function (s) { if (s.exercises.length) saves.push(Store.putSet(s)); }); });
+      results.forEach(function (r) {
+        if (r.group && r.assetData.length && (r.sets || []).some(function (s) { return s.exercises.length; })) saves.push(Store.putAssets(r.group, r.assetData));
+        delete r.assetData; /* keep the in-memory report small */
+      });
+      return Promise.all(saves).then(function () { return results; });
+    });
+  }
+  function zipToSets(file) {
+    if (!window.JSZip) return Promise.reject({ k: 'needLib', p: { lib: 'JSZip (jszip.min.js)' } });
+    return readBuf(file).then(function (b) { return JSZip.loadAsync(b); }).then(function (zip) {
+      var sets = [], assets = [], jobs = [];
+      zip.forEach(function (path, entry) {
+        if (entry.dir || /(^|\/)(__MACOSX|\.)/.test(path)) return;
+        var lp = path.toLowerCase();
+        if (/\.(csv|tsv|txt)$/.test(lp)) jobs.push(entry.async('string').then(function (tx) { sets.push(csvToSet(tx, path)); }));
+        else if (/\.xlsx$/.test(lp)) jobs.push(entry.async('arraybuffer').then(function (bb) { sets.push.apply(sets, xlsxToSets(bb, path)); }));
+        else jobs.push(entry.async('blob').then(function (bl) { assets.push({ path: path, blob: bl, type: mime(path) }); })); /* reserved media assets */
+      });
+      return Promise.all(jobs).then(function () {
+        var group = assets.length ? 'zip-' + U.uid() : null, paths = assets.map(function (a) { return a.path; });
+        sets.forEach(function (s) { s.assets = paths.slice(); s.assetGroup = group; s.source = file.name; });
+        return { name: file.name, sets: sets, assets: assets.length, assetData: assets, group: group };
+      });
+    });
+  }
+  return { importFiles: importFiles, rowsToSet: rowsToSet, csvToSet: csvToSet };
+})();
+
+/* ============================== sound (Web Audio, synthesized) ============================== */
+var Sound = (function () {
+  var ctx = null;
+  function ac() {
+    if (!ctx) { var C = window.AudioContext || window.webkitAudioContext; if (!C) return null; try { ctx = new C(); } catch (e) { return null; } }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+  function tone(f, d, type, g, at, f2) {
+    var c = ac(); if (!c) return;
+    var t0 = c.currentTime + (at || 0), o = c.createOscillator(), v = c.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(f, t0);
+    if (f2) o.frequency.exponentialRampToValueAtTime(f2, t0 + d);
+    v.gain.setValueAtTime(0.0001, t0); v.gain.exponentialRampToValueAtTime(g || 0.18, t0 + 0.012); v.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+    o.connect(v); v.connect(c.destination); o.start(t0); o.stop(t0 + d + 0.02);
+  }
+  var S = {
+    tap: function () { tone(700, 0.05, 'sine', 0.1); },
+    place: function () { tone(480, 0.09, 'triangle', 0.16, 0, 820); },
+    back: function () { tone(620, 0.09, 'triangle', 0.12, 0, 380); },
+    right: function () { tone(660, 0.1, 'sine', 0.17); tone(990, 0.16, 'sine', 0.17, 0.09); },
+    wrong: function () { tone(220, 0.2, 'sawtooth', 0.07, 0, 150); },
+    win: function () { [523, 659, 784, 1046].forEach(function (f, i) { tone(f, 0.22, 'triangle', 0.16, i * 0.11); }); }
+  };
+  function vib(p) { if (Settings.get('haptics') && navigator.vibrate) { try { navigator.vibrate(p); } catch (e) {} } }
+  return {
+    play: function (name) {
+      if (name === 'wrong') vib([30, 40, 30]); else if (name === 'place') vib(12);
+      if (!Settings.get('sound')) return;
+      try { S[name] && S[name](); } catch (e) {}
+    }
+  };
+})();
+
+/* ============================== speech (Web Speech API, English) ============================== */
+var Speech = (function () {
+  var ss = window.speechSynthesis, voice = null, listeners = [];
+  function pick() {
+    if (!ss) return;
+    var vs = ss.getVoices() || [];
+    voice = vs.filter(function (v) { return /^en(-|_|$)/i.test(v.lang); }).sort(function (a, b) { return (/en-(us|gb)/i.test(b.lang) ? 1 : 0) - (/en-(us|gb)/i.test(a.lang) ? 1 : 0); })[0] || null;
+    listeners.forEach(function (f) { f(!!voice); });
+  }
+  if (ss) { pick(); if (ss.addEventListener) ss.addEventListener('voiceschanged', pick); else ss.onvoiceschanged = pick; }
+  return {
+    available: function () { return !!(ss && voice); },
+    onChange: function (f) { listeners.push(f); },
+    offChange: function (f) { listeners = listeners.filter(function (x) { return x !== f; }); },
+    speaking: function () { return !!(ss && ss.speaking); },
+    speak: function (text, onend) {
+      if (!ss || !voice) return; ss.cancel();
+      var u = new SpeechSynthesisUtterance(text); u.voice = voice; u.lang = voice.lang; u.rate = 0.9;
+      u.onend = u.onerror = function () { onend && onend(); };
+      ss.speak(u);
+    },
+    stop: function () { if (ss) ss.cancel(); }
+  };
+})();
+
+/* ============================== activity: fill_blank ============================== */
+var FillBlank = (function () {
+  function str(v) { return v == null ? '' : String(v).trim(); }
+
+  function parseRow(row, rowNum) {
+    var errors = [], warnings = [], P = function (o) { o = o || {}; o.row = rowNum; return o; };
+    var para = row.paragraph == null ? '' : String(row.paragraph);
+    if (!para.trim()) { errors.push({ k: 'v_noPara', p: P() }); return { errors: errors }; }
+    var ans = Answers.parse(row.answers, (row.answerCols || []).slice().sort(function (a, b) { return a.n - b.n; }));
+    ans.errors.forEach(function (e) { errors.push({ k: e.k, p: P() }); });
+    if (!ans.keys.length) { errors.push({ k: 'v_noAnswers', p: P() }); return { errors: errors }; }
+    var bp = BlankParser.parse(para, ans.count), counts = {};
+    if (!bp.order.length) errors.push({ k: 'v_noBlanks', p: P() });
+    bp.order.forEach(function (n) { counts[n] = (counts[n] || 0) + 1; });
+    Object.keys(counts).forEach(function (n) { if (counts[n] > 1) errors.push({ k: 'v_dup', p: P({ n: n }) }); });
+    var uniq = Object.keys(counts).map(Number);
+    if (ans.format !== 'B' && bp.order.length && uniq.length !== ans.keys.length) errors.push({ k: 'v_count', p: P({ b: uniq.length, a: ans.keys.length }) });
+    ans.keys.forEach(function (n) { if (!counts[n]) errors.push({ k: ans.format === 'B' ? 'v_unknownNum' : 'v_missing', p: P({ n: n }) }); });
+    uniq.forEach(function (n) { if (!ans.map[n]) errors.push({ k: 'v_noAnswerFor', p: P({ n: n }) }); });
+    var distractors = Answers.items(row.distractors).map(function (x) { return Answers.alts(x)[0]; }).filter(Boolean);
+    var all = [para, row.instruction, row.answers, row.distractors, row.hint, row.explanation].concat((row.answerCols || []).map(function (c) { return c.value; })).join(' ');
+    if (Zawgyi.suspect(all)) warnings.push({ k: 'v_zawgyi', p: P() });
+    var answers = {}; bp.order.forEach(function (n) { if (ans.map[n]) answers[n] = ans.map[n]; });
+    return {
+      errors: errors, warnings: warnings,
+      exercise: {
+        id: str(row.id) || 'row' + rowNum, type: 'fill_blank', row: rowNum,
+        title: str(row.title), instruction: str(row.instruction), source: bp.source, order: bp.order,
+        answers: answers, distractors: distractors, hint: str(row.hint), explanation: str(row.explanation),
+        tags: Answers.items(String(row.tags || '').replace(/,/g, '|')), level: str(row.level),
+        shuffle: !/^(no|n|false|0|off)$/i.test(str(row.shuffle)),
+        media: { image: str(row.image), audio: str(row.audio), model3d: str(row.model3d) } /* reserved */
+      }
+    };
+  }
+
+  function blocksOf(ex) {
+    var b = ex.order.map(function (n) { return { text: ex.answers[n][0], n: n }; });
+    ex.distractors.forEach(function (d) { b.push({ text: d, n: 0 }); });
+    return b;
+  }
+  function freshState(ex) {
+    var k = blocksOf(ex).length, slots = [], i;
+    for (i = 0; i < k; i++) slots.push(i);
+    if (ex.shuffle) U.shuffle(slots);
+    return { v: 1, k: k, place: {}, slots: slots, locked: {}, marks: {}, hints: {}, hintsTotal: 0, firstTry: {}, attempts: 0, mistakes: 0,
+      revealed: false, done: false, score: 0, total: ex.order.length, stars: 0, target: ex.order[0], showHint: false, updatedAt: Date.now() };
+  }
+  function isCorrect(ex, n, text) {
+    var t0 = U.norm(text); return (ex.answers[n] || []).some(function (a) { return U.norm(a) === t0; });
+  }
+  function computeStars(st) {
+    if (st.revealed) return 1;
+    var good = 0; Object.keys(st.firstTry).forEach(function (n) { if (st.firstTry[n]) good++; });
+    var raw = good / Math.max(1, st.total) - 0.1 * st.hintsTotal;
+    return raw >= 0.85 ? 3 : raw >= 0.55 ? 2 : 1;
+  }
+  function check(ex, st) {
+    var blocks = blocksOf(ex), s = 0;
+    ex.order.forEach(function (n) { var i = st.place[n]; if (i != null && isCorrect(ex, n, blocks[i].text)) s++; });
+    return s;
+  }
+
+  /* -------- render: returns a controller -------- */
+  function render(ctx) {
+    var ex = ctx.exercise, st = ctx.state, blocks = blocksOf(ex), mount = ctx.mount;
+    if (!st || st.v !== 1 || st.k !== blocks.length || st.total !== ex.order.length) st = ctx.state = freshState(ex);
+    var undoStack = [], pendingBad = {}, chipEls = [], slotEls = [], blankEls = {}, destroyed = false;
+    var save = function () { st.updatedAt = Date.now(); ctx.save(st); };
+
+    /* ---- DOM ---- */
+    var left = h('section', { class: 'card', 'aria-labelledby': 'exTitle' });
+    left.appendChild(h('h2', { id: 'exTitle' }, ex.title || t('exercise') + ' ' + (ctx.index + 1)));
+    if (ex.instruction) left.appendChild(h('div', { class: 'instr' }, RichText.render(ex.instruction)));
+    var hintCard = h('div', { class: 'hintcard hidden', role: 'note' }, '💡 ', ex.hint ? RichText.render(ex.hint) : null);
+    left.appendChild(hintCard);
+    var passage = h('div', { class: 'passage', id: 'passage' });
+    passage.appendChild(RichText.render(ex.source, { blank: makeBlank }));
+    left.appendChild(passage);
+    var feedback = h('div', { class: 'feedback hidden', role: 'status' });
+    left.appendChild(feedback);
+
+    var panel = h('aside', { class: 'card bankpanel', 'aria-label': t('bank') });
+    var leftBadge = h('span', { class: 'badge' });
+    var colBtn = h('button', { class: 'iconbtn collapse-btn', type: 'button', 'aria-expanded': 'true', 'aria-label': t('collapse'), onclick: function () {
+      var c = panel.classList.toggle('collapsed'); colBtn.setAttribute('aria-expanded', String(!c)); colBtn.firstChild.textContent = c ? '▴' : '▾';
+    } }, h('span', { 'aria-hidden': 'true' }, '▾'));
+    panel.appendChild(h('div', { class: 'bankhead' }, h('span', { class: 'h' }, t('bank')), leftBadge, colBtn));
+    var tb = h('div', { class: 'toolbar', role: 'toolbar' });
+    var B = {};
+    function tool(key, ic, fn, cls) { var b = h('button', { class: 'btn small ' + (cls || ''), type: 'button', onclick: fn }, h('span', { class: 'ic', 'aria-hidden': 'true' }, ic), t(key)); B[key] = b; tb.appendChild(b); return b; }
+    if (Settings.get('feedback') !== 'instant') tool('check', '✔', function () { api.check(); }, 'primary check');
+    tool('undo', '↶', function () { api.undo(); });
+    tool('reset', '⟲', function () { api.reset(); });
+    tool('shuffle', '🔀', function () { api.shuffle(); });
+    tool('hint', '💡', function () { api.hint(); });
+    tool('showAnswers', '👁', function () { ctx.gate(function () { api.showAnswers(); }); });
+    var readBtn = tool('readAloud', '🔊', function () { api.read(); });
+    function voiceVis(ok) { readBtn.classList.toggle('hidden', !ok); }
+    voiceVis(Speech.available()); Speech.onChange(voiceVis);
+    panel.appendChild(tb);
+    var bank = h('div', { class: 'bank', role: 'list', 'aria-label': t('bank') });
+    blocks.forEach(function (b, i) {
+      var slot = h('div', { class: 'slot', role: 'listitem' }); slotEls.push(slot); bank.appendChild(slot);
+      var c = h('button', { class: 'chip', type: 'button', 'data-i': i }, b.text);
+      c.addEventListener('pointerdown', function (e) { onDown(e, i); });
+      c.addEventListener('click', function (e) { e.stopPropagation(); if (e.detail === 0) { e.preventDefault(); tapChip(i, true); } });
+      c.addEventListener('keydown', function (e) { arrows(e, c); });
+      chipEls.push(c);
+    });
+    panel.appendChild(bank);
+    U.clear(mount).appendChild(h('div', { class: 'exgrid' }, left, panel));
+
+    function makeBlank(n) {
+      var el = h('span', { class: 'blank', role: 'button', tabindex: '0', 'data-n': n },
+        h('span', { class: 'num', 'aria-hidden': 'true' }, '(' + n + ')'), h('span', { class: 'peek', 'aria-hidden': 'true' }));
+      el.addEventListener('click', function (e) { if (!e.target.closest('.chip') || e.detail === 0) tapBlank(n); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tapBlank(n, true); } else arrows(e, el);
+      });
+      blankEls[n] = el; return el;
+    }
+
+    /* ---- helpers ---- */
+    function where(i) { for (var n in st.place) if (st.place[n] === i) return +n; return 0; }
+    function emptyBlanks() { return ex.order.filter(function (n) { return st.place[n] == null; }); }
+    function nextEmpty(from) {
+      var e = emptyBlanks(); if (!e.length) return null;
+      var idx = ex.order.indexOf(from), i;
+      for (i = 1; i <= ex.order.length; i++) { var n = ex.order[(idx + i) % ex.order.length]; if (st.place[n] == null) return n; }
+      return e[0];
+    }
+    function snap() { undoStack.push(JSON.stringify({ place: st.place, slots: st.slots, locked: st.locked, marks: st.marks, target: st.target })); if (undoStack.length > 60) undoStack.shift(); }
+    function peekText(n) {
+      var a = (ex.answers[n] || [''])[0], k = st.hints[n] || 0, out = '', seen = 0;
+      if (!k) return '';
+      for (var j = 0; j < a.length; j++) { var c = a[j]; if (/\s/.test(c)) { out += ' '; continue; } out += seen < k ? c : '_'; seen++; }
+      return out;
+    }
+
+    /* ---- sync DOM with state (FLIP animation) ---- */
+    function sync(animate, from) {
+      var first = animate && !U.reducedMotion() ? chipEls.map(function (c) { return c.getBoundingClientRect(); }) : null;
+      if (from && first) first[from.i] = from.rect;
+      blocks.forEach(function (b, i) {
+        var n = where(i), cont = n ? blankEls[n] : slotEls[st.slots[i]];
+        if (cont && chipEls[i].parentNode !== cont) cont.appendChild(chipEls[i]);
+        chipEls[i].tabIndex = n ? -1 : 0;
+        chipEls[i].classList.toggle('locked', !!(n && st.locked[n]));
+      });
+      slotEls.forEach(function (s) { s.classList.toggle('empty', !s.querySelector('.chip')); });
+      var tgt = st.place[st.target] == null ? st.target : null;
+      ex.order.forEach(function (n) {
+        var el = blankEls[n]; if (!el) return;
+        var i = st.place[n], filled = i != null;
+        el.classList.toggle('filled', filled);
+        el.classList.toggle('target', !filled && n === tgt);
+        el.classList.toggle('ok', st.marks[n] === 'ok');
+        el.classList.toggle('bad', st.marks[n] === 'bad');
+        el.querySelector('.peek').textContent = filled ? '' : peekText(n);
+        el.setAttribute('aria-label', filled ? t('filledBlank', { n: n, text: blocks[i].text }) + (st.marks[n] === 'ok' ? ' ✓' : st.marks[n] === 'bad' ? ' ✗' : '') : t('emptyBlank', { n: n }));
+      });
+      var rem = emptyBlanks().length;
+      leftBadge.textContent = t('left', { n: rem });
+      hintCard.classList.toggle('hidden', !(st.showHint && ex.hint));
+      if (B.undo) B.undo.disabled = !undoStack.length;
+      if (first) chipEls.forEach(function (c, i) {
+        var a = first[i], b = c.getBoundingClientRect(), dx = a.left - b.left, dy = a.top - b.top;
+        if ((Math.abs(dx) > 1 || Math.abs(dy) > 1) && c.animate && a.width) {
+          c.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + (a.width / Math.max(1, b.width)) + ')' }, { transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.2,.8,.2,1)' });
+        }
+      });
+    }
+
+    /* ---- core actions ---- */
+    function place(i, n, fromN) {
+      if (st.locked[n] || pendingBad[n]) return false;
+      snap();
+      var occ = st.place[n], src = fromN || where(i);
+      if (src) delete st.place[src];
+      if (occ != null && occ !== i) { if (fromN && !st.locked[fromN]) st.place[fromN] = occ; delete st.marks[fromN]; }
+      st.place[n] = i; delete st.marks[n];
+      if (src) delete st.marks[src];
+      st.target = nextEmpty(n) || n;
+      Sound.play('place');
+      ctx.announce(t('placed', { text: blocks[i].text, n: n }));
+      if (Settings.get('feedback') === 'instant') { instant(n); if (fromN && occ != null && occ !== i && st.place[fromN] === occ) instant(fromN); }
+      return true;
+    }
+    function giveBack(i) {
+      var n = where(i); if (!n || st.locked[n] || pendingBad[n]) return;
+      snap(); delete st.place[n]; delete st.marks[n]; st.target = n;
+      Sound.play('back'); ctx.announce(t('returned', { text: blocks[i].text }));
+    }
+    function instant(n) {
+      var i = st.place[n], ok = isCorrect(ex, n, blocks[i].text);
+      if (st.firstTry[n] == null) st.firstTry[n] = ok;
+      if (ok) {
+        st.locked[n] = true; st.marks[n] = 'ok'; Sound.play('right'); ctx.announce(t('correct'));
+        st.score = check(ex, st);
+        if (st.score === st.total) { st.done = true; st.attempts = 1; st.stars = computeStars(st); setTimeout(function () { finish(); }, 500); }
+      } else {
+        st.marks[n] = 'bad'; st.mistakes++; pendingBad[n] = true; Sound.play('wrong'); ctx.announce(t('wrong'));
+        setTimeout(function () {
+          if (destroyed) return;
+          pendingBad[n] = false;
+          if (st.place[n] === i) { delete st.place[n]; delete st.marks[n]; st.target = n; }
+          sync(true); save();
+        }, 800);
+      }
+    }
+    function tapChip(i, kb) {
+      var n = where(i);
+      if (n) { giveBack(i); sync(true); save(); if (kb) blankEls[n].focus(); return; }
+      var tg = (st.target && st.place[st.target] == null) ? st.target : nextEmpty(st.target || ex.order[0]);
+      if (!tg) { if (st.target && !st.locked[st.target]) tg = st.target; else { ctx.announce(t('noTarget')); UI.toast(t('noTarget')); return; } }
+      place(i, tg); sync(true); save();
+      if (kb) { var nb = bank.querySelector('.chip'); if (nb) nb.focus(); else blankEls[tg].focus(); }
+    }
+    function tapBlank(n, kb) {
+      var i = st.place[n];
+      if (i != null) { if (!st.locked[n]) { giveBack(i); sync(true); save(); } return; }
+      st.target = n; Sound.play('tap'); ctx.announce(t('targetIs', { n: n })); sync(false); save();
+      if (kb) { var c = bank.querySelector('.chip'); if (c) c.focus(); }
+    }
+    function arrows(e, el) {
+      var k = e.key; if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].indexOf(k) < 0) return;
+      var list = el.classList.contains('blank') ? Array.prototype.slice.call(passage.querySelectorAll('.blank')) : Array.prototype.slice.call(bank.querySelectorAll('.chip'));
+      var idx = list.indexOf(el); if (idx < 0) return;
+      e.preventDefault();
+      var j = (k === 'ArrowLeft' || k === 'ArrowUp') ? idx - 1 : idx + 1;
+      if (list[(j + list.length) % list.length]) list[(j + list.length) % list.length].focus();
+    }
+
+    /* ---- pointer drag & drop (mouse, touch, pen) ---- */
+    var drag = null, raf = 0;
+    function onDown(e, i) {
+      if (e.button > 0 || destroyed) return;
+      var n = where(i); if (n && (st.locked[n] || pendingBad[n])) return;
+      drag = { i: i, from: n, x: e.clientX, y: e.clientY, px: e.clientX, py: e.clientY, id: e.pointerId, touch: e.pointerType === 'touch', hold: e.pointerType !== 'touch', started: false, dead: false };
+      if (drag.touch) drag.timer = setTimeout(function () { if (drag && !drag.started && !drag.dead) { drag.hold = true; chipEls[i].style.transform = 'scale(1.06)'; } }, 170);
+      window.addEventListener('pointermove', onMove);
+      window.addEventListener('pointerup', onUp);
+      window.addEventListener('pointercancel', onCancel);
+    }
+    function dist() { return Math.hypot(drag.px - drag.x, drag.py - drag.y); }
+    function onMove(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      drag.px = e.clientX; drag.py = e.clientY;
+      if (!drag.started) {
+        if (dist() < 7) return;
+        if (!drag.hold) { drag.dead = true; return; }
+        startDrag();
+      }
+      if (drag.started) { e.preventDefault(); moveGhost(); }
+    }
+    function startDrag() {
+      var c = chipEls[drag.i], r = c.getBoundingClientRect();
+      c.style.transform = '';
+      drag.started = true; drag.ox = drag.x - r.left; drag.oy = drag.y - r.top;
+      var g = c.cloneNode(true); g.classList.add('ghost'); g.style.width = r.width + 'px'; g.removeAttribute('data-i');
+      document.body.appendChild(g); drag.ghost = g;
+      c.classList.add('dragging-src'); document.body.classList.add('is-dragging');
+      Sound.play('tap');
+      moveGhost(); loop();
+    }
+    function moveGhost() {
+      var g = drag.ghost; if (!g) return;
+      g.style.transform = 'translate(' + (drag.px - drag.ox) + 'px,' + (drag.py - drag.oy) + 'px) rotate(-3deg) scale(1.06)';
+      var el = document.elementFromPoint(drag.px, drag.py), tgtB = el && el.closest('.blank'), tgtK = el && el.closest('.bank');
+      mount.querySelectorAll('.drop-ok').forEach(function (x) { x.classList.remove('drop-ok'); });
+      drag.over = null;
+      if (tgtB && passage.contains(tgtB) && !st.locked[+tgtB.getAttribute('data-n')]) { tgtB.classList.add('drop-ok'); drag.over = { n: +tgtB.getAttribute('data-n') }; }
+      else if (tgtK === bank && drag.from) { bank.classList.add('drop-ok'); drag.over = { bank: true }; }
+    }
+    function loop() {
+      if (!drag || !drag.started) return;
+      var y = drag.py, H = window.innerHeight, edge = 70, v = 0, pr = panel.getBoundingClientRect();
+      var stickyBottom = window.innerWidth < 900;
+      if (y < edge + 60) v = -Math.ceil((edge + 60 - y) / 6);
+      else if (stickyBottom && y > pr.top - edge && y < pr.top + 10) v = Math.ceil((y - (pr.top - edge)) / 6);
+      else if (y > H - edge) v = Math.ceil((y - (H - edge)) / 6);
+      if (v) { window.scrollBy(0, v); moveGhost(); }
+      var br = bank.getBoundingClientRect();
+      if (drag.px > br.left && drag.px < br.right) { if (y > br.top && y < br.top + 30) bank.scrollTop -= 8; else if (y < br.bottom && y > br.bottom - 30) bank.scrollTop += 8; }
+      raf = requestAnimationFrame(loop);
+    }
+    function endDrag() {
+      window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp); window.removeEventListener('pointercancel', onCancel);
+      cancelAnimationFrame(raf);
+      if (drag) { clearTimeout(drag.timer); chipEls[drag.i].style.transform = ''; chipEls[drag.i].classList.remove('dragging-src'); }
+      if (drag && drag.ghost) drag.ghost.remove();
+      document.body.classList.remove('is-dragging');
+      mount.querySelectorAll('.drop-ok').forEach(function (x) { x.classList.remove('drop-ok'); });
+    }
+    function onCancel() { endDrag(); drag = null; }
+    function onUp(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var d = drag; endDrag(); drag = null;
+      if (!d.started) { if (!d.dead && Math.hypot(d.px - d.x, d.py - d.y) < 7) tapChip(d.i); return; }
+      var rect = d.ghost.getBoundingClientRect(), changed = false;
+      if (d.over && d.over.n) { if (d.over.n !== d.from) changed = place(d.i, d.over.n, d.from || 0); }
+      else if (d.over && d.over.bank && d.from) { giveBack(d.i); changed = true; }
+      sync(true, { i: d.i, rect: rect }); if (changed) save();
+    }
+    function blockTouchScroll(e) { if (drag && drag.started) e.preventDefault(); }
+    document.addEventListener('touchmove', blockTouchScroll, { passive: false });
+
+    /* ---- result ---- */
+    function finish() {
+      st.score = check(ex, st); st.stars = st.done ? computeStars(st) : st.stars || computeStars(st);
+      if (st.done && !st.revealed) Sound.play('win');
+      save(); ctx.onResult(st);
+    }
+    function showFeedback() {
+      U.clear(feedback); feedback.classList.remove('hidden');
+      feedback.appendChild(h('div', { class: 'big' }, t('score') + ': ' + st.score + '/' + st.total));
+      if (ex.explanation) feedback.appendChild(h('div', { class: 'muted' }, RichText.render(ex.explanation)));
+    }
+
+    /* ---- public controller ---- */
+    var api = {
+      check: function () {
+        st.attempts++;
+        ex.order.forEach(function (n) {
+          var i = st.place[n], ok = i != null && isCorrect(ex, n, blocks[i].text);
+          if (st.firstTry[n] == null) st.firstTry[n] = ok;
+          st.marks[n] = ok ? 'ok' : 'bad';
+        });
+        st.score = check(ex, st);
+        st.done = st.score === st.total;
+        if (st.done) st.stars = computeStars(st);
+        Sound.play(st.done ? 'right' : 'wrong');
+        ctx.announce(t('scoreIs', { s: st.score, t: st.total }));
+        sync(false); showFeedback(); save();
+        setTimeout(function () { if (!destroyed) finish(); }, st.done ? 600 : 1100);
+      },
+      tryAgain: function () {
+        snap();
+        ex.order.forEach(function (n) {
+          var i = st.place[n];
+          if (i != null && isCorrect(ex, n, blocks[i].text)) { st.locked[n] = true; st.marks[n] = 'ok'; }
+          else { delete st.place[n]; delete st.marks[n]; }
+        });
+        st.target = nextEmpty(ex.order[ex.order.length - 1]) || ex.order[0];
+        feedback.classList.add('hidden'); sync(true); save();
+      },
+      restart: function () {
+        var fresh = freshState(ex); Object.keys(st).forEach(function (k) { delete st[k]; }); Object.assign(st, fresh);
+        undoStack = []; feedback.classList.add('hidden'); sync(true); save();
+      },
+      reset: function () {
+        snap();
+        ex.order.forEach(function (n) { if (!st.locked[n]) { delete st.place[n]; delete st.marks[n]; } });
+        st.target = nextEmpty(ex.order[ex.order.length - 1]) || ex.order[0];
+        feedback.classList.add('hidden'); sync(true); save();
+      },
+      shuffle: function () {
+        snap();
+        var idx = [], pos = [];
+        blocks.forEach(function (b, i) { if (!where(i)) { idx.push(i); pos.push(st.slots[i]); } });
+        U.shuffle(pos); idx.forEach(function (i, j) { st.slots[i] = pos[j]; });
+        Sound.play('tap'); sync(true); save();
+      },
+      undo: function () {
+        var s = undoStack.pop(); if (!s) return; s = JSON.parse(s);
+        st.place = s.place; st.slots = s.slots; st.locked = s.locked; st.marks = s.marks; st.target = s.target;
+        Sound.play('back'); sync(true); save();
+      },
+      hint: function () {
+        var n = (st.target && st.place[st.target] == null) ? st.target : emptyBlanks()[0];
+        if (!n) { UI.toast(t('noTarget')); return; }
+        var a = (ex.answers[n] || [''])[0].replace(/\s/g, '');
+        if ((st.hints[n] || 0) < a.length) { st.hints[n] = (st.hints[n] || 0) + 1; st.hintsTotal++; }
+        st.target = n; st.showHint = true;
+        UI.toast(t('hintUsed')); ctx.announce(peekText(n));
+        sync(false); save();
+      },
+      showAnswers: function () {
+        snap();
+        ex.order.forEach(function (n) { var i = st.place[n]; if (i != null && !isCorrect(ex, n, blocks[i].text)) delete st.place[n]; });
+        ex.order.forEach(function (n) {
+          if (st.place[n] != null) return;
+          for (var i = 0; i < blocks.length; i++) if (!where(i) && isCorrect(ex, n, blocks[i].text)) { st.place[n] = i; break; }
+        });
+        ex.order.forEach(function (n) { if (st.firstTry[n] == null) st.firstTry[n] = false; if (st.place[n] != null) { st.locked[n] = true; st.marks[n] = 'ok'; } });
+        st.revealed = true; st.done = true;
+        sync(true); showFeedback(); finish();
+      },
+      read: function () {
+        if (Speech.speaking()) { Speech.stop(); readBtn.lastChild.textContent = t('readAloud'); return; }
+        var text = (ex.instruction ? RichText.plain(ex.instruction) + '. ' : '') + RichText.plain(ex.source, function (n) { var i = st.place[n]; return i != null ? blocks[i].text : t('blank'); });
+        readBtn.lastChild.textContent = t('stop');
+        Speech.speak(text, function () { readBtn.lastChild.textContent = t('readAloud'); });
+      },
+      state: function () { return st; },
+      destroy: function () {
+        destroyed = true; endDrag(); drag = null; Speech.stop(); Speech.offChange(voiceVis);
+        document.removeEventListener('touchmove', blockTouchScroll);
+      }
+    };
+    sync(false);
+    if (st.attempts && Settings.get('feedback') !== 'instant' && Object.keys(st.marks).length) showFeedback();
+    return api;
+  }
+
+  return { type: 'fill_blank', label: 'Fill in the Blank', parseRow: parseRow, render: render, check: check, reset: freshState, isCorrect: isCorrect, blocksOf: blocksOf };
+})();
+registerActivity(FillBlank);
+
+/* ============================== built-in sets ==============================
+   Stored as raw rows so they go through exactly the same importer path. */
+var BUILTIN = [
+  {
+    id: 'builtin-routine', name: 'My Daily Routine (test fixture)',
+    header: ['id', 'title', 'instruction', 'paragraph', 'answers', 'hint', 'explanation', 'level'],
+    rows: [[
+      'routine-1', 'My Daily Routine', 'Fill each blank with the correct phrase.',
+      "I usually ___(1)___ at 7.00 when my alarm clock (2). I ___(3)___ it straight away and then usually just ___(4)___ there in bed for another five or ten minutes before I finally ___(5)___. I go to the bathroom, ___(6)___, ___(7)___ my teeth and then ___(8)___.\n" +
+      "I usually ___(9)___ - cornflakes, toast, a boiled egg and coffee - at about 7.40. While I ___(10)___ I normally ___(11)___ the news on the radio.\n" +
+      "I ___(12)___ at about 7.50. I always ___(13)___ Mr Brown the newsagent's on my way to the station to ___(14)___ a daily newspaper. I ___(15)___ the eight o'clock train to work and usually ___(16)___ the newspaper on it.\n" +
+      "I ___(17)___ at 9.00 and ___(18)___ at 5.00. At eleven o'clock we ___(19)___ for tea or coffee and I always ___(20)___ at 12.30 - I usually go with some friends to an Italian restaurant just round the corner.\n" +
+      "I (21)___________ from work at about six o'clock and ___(22)___ at 7.00. Most evenings I stay at home and (23). Sometimes, I (24)*** my friends at the pub or ___(25)___ the cinema. Twice a week I ___(26)___ my mother for a chat and to ___(27)___ how everyone is. I nearly always ___(28)___ at 11.00 or 11.15 on weekdays, and the last thing I do before I ___(29)___ is to ___(30)___ the alarm clock for the next day.",
+      'wake up|goes off|turn off|lie|get up|have a shower|brush|get dressed|have breakfast|eat|listen to|leave home|pop into|buy|catch|read|start work|finish|have a break|have lunch|get home|have dinner|watch TV|meet|go to|phone|find out|go to bed|fall asleep|set',
+      'Read the whole sentence before you choose.', 'We use the **present simple** for daily routines.', 'A2'
+    ]]
+  },
+  {
+    id: 'builtin-school', name: 'School Life (Grade 5)',
+    header: ['id', 'title', 'instruction', 'paragraph', 'answers', 'answer1', 'answer2', 'answer3', 'answer4', 'answer5', 'answer6', 'answer7', 'distractors', 'hint', 'explanation', 'tags', 'level', 'shuffle'],
+    rows: [
+      ['school-1', 'My School Morning', 'Choose the right word for each blank. (see page 2 of your book)',
+        'Every morning I **walk** to school with my sister. We ___(1)___ at the school gate at 8.00. First, we ___(2)___ the national anthem. Then our teacher ___(3)___ the register.\nMy classroom is Room (12) on the second floor. I always ___(4)___ next to my best friend, Aye Aye. We ___(5)___ our homework together before the bell ___(6)___.',
+        'arrive~get there|sing|calls~takes|sit|check|rings', '', '', '', '', '', '', '',
+        'sleep|swims|cooks', 'Things you do at school every day.', 'Use the *present simple*: he/she/it + **-s**.', 'school,routine', 'Grade 5', 'yes'],
+      ['school-2', 'Our Class Timetable', 'Look at the timetable. Then fill in the blanks. ++Use the subjects in the table.++',
+        '| Time | Monday | Tuesday |\n|---|---|---|\n| 9.00 | English | Maths |\n| 10.00 | Science | Myanmar |\n| 11.00 | Art | P.E. |\n\nOn Monday, our first lesson is __(1)__. On Tuesday at 9.00 we have {{2}}. We paint pictures in (3) on Monday at 11.00.\nOn Tuesday, we run and play games in ___(4)___. Our *Science* lesson starts at (5)***.',
+        '1=English|2=Maths|3=Art|4=P.E.~PE|5=10.00~10 o\'clock', '', '', '', '', '', '', '',
+        'Music|History|12.00', 'Find the day first, then the time.', 'Numbered answers (1=, 2=) can be in any order.', 'school,timetable', 'Grade 5', 'yes'],
+      ['school-3', 'Lunch Time', 'Fill in the blanks with the best words.',
+        'At 12.00 the bell rings and we ___(1)___ our lunch boxes. My mother ___(2)___ rice and chicken for me. My friend Ko Ko ___(3)___ his noodles with me.\nWe ___(4)___ our hands before we eat. After lunch, we ___(5)___ football in the playground. Our teacher says, "___(6)___ run near the classroom!" Then we ___(7)___ to class at 1.00.\nThere are $3 \\times 10 = 30$ students in our class.',
+        '', 'open', 'cooks~makes', 'shares', 'wash', 'play', 'Don\u2019t~Do not', 'go back~return',
+        'eats|sleeps|plays', 'Who does the action? I/we or he/she?', '"Don\'t" is short for **do not**.', 'school,food', 'Grade 5', 'yes']
+    ]
+  }
+];
+function builtinToRows(b) { return [b.header].concat(b.rows); }
+
+/* Templates and samples (used by the Guide screen) */
+var TEMPLATE_ROWS = [
+  ['id', 'type', 'title', 'instruction', 'paragraph', 'answers', 'answer1', 'answer2', 'answer3', 'distractors', 'hint', 'explanation', 'tags', 'level', 'shuffle', 'image', 'audio', 'model3d'],
+  ['ex1', 'fill_blank', 'My Morning (format A)', 'Choose the correct words.', 'I ___(1)___ at 6.00.\nI ___(2)___ my teeth and then I (3) breakfast.', 'get up~wake up|brush|have~eat', '', '', '', 'sleep|swim', 'Think about your morning.', 'We use the **present simple** for routines.', 'routine', 'Grade 5', 'yes', '', '', ''],
+  ['ex2', 'fill_blank', 'At School (format B)', 'Fill in the blanks.', 'We {{1}} English on Monday. Our teacher __(2)__ us a story.', '2=reads|1=study~learn', '', '', '', 'eats', '', '', 'school', 'Grade 5', 'no', '', '', ''],
+  ['ex3', 'fill_blank', 'Pets (format C)', '', 'My cat ___(1)___ milk. It (2)*** on my bed. It likes to ___(3)___.', '', 'drinks', 'sleeps', 'play', 'barks|flies', '', '', 'animals', 'Grade 5', 'yes', '', '', '']
+];
+
+/* ============================== ui ============================== */
+var UI = (function () {
+  var main = document.getElementById('main'), current = null, route = { name: 'home' }, lastImport = null;
+
+  function announce(msg) { var l = document.getElementById('live'); l.textContent = ''; setTimeout(function () { l.textContent = msg; }, 30); }
+  function toast(msg, action, ms) {
+    var box = document.getElementById('toasts'), el = h('div', { class: 'toast', role: 'status' }, h('span', null, msg));
+    if (action) el.appendChild(h('button', { class: 'btn small primary', type: 'button', onclick: function () { el.remove(); action.fn(); } }, action.label));
+    box.appendChild(el);
+    if (box.children.length > 3) box.firstChild.remove();
+    if (ms !== 0) setTimeout(function () { el.remove(); }, ms || 3200);
+    return el;
+  }
+  /* modal({ title, body: Node|[Nodes], actions: [{ label, cls, fn -> false keeps open }], onClose }) */
+  function modal(o) {
+    var prev = document.activeElement;
+    var box = h('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': o.title || '' });
+    if (o.title) box.appendChild(h('h2', null, o.title));
+    U.add(box, o.body);
+    var ov = h('div', { class: 'overlay' }, box);
+    function close() { ov.remove(); document.removeEventListener('keydown', key); o.onClose && o.onClose(); if (prev && prev.focus) prev.focus(); }
+    function key(e) {
+      if (e.key === 'Escape' && o.dismissable !== false) close();
+      if (e.key === 'Tab') {
+        var f = box.querySelectorAll('button,input,select,textarea,[tabindex="0"]'); if (!f.length) return;
+        var a = f[0], z = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+      }
+    }
+    if (o.actions && o.actions.length) {
+      var row = h('div', { class: 'actions' });
+      o.actions.forEach(function (a) { row.appendChild(h('button', { class: 'btn ' + (a.cls || ''), type: 'button', onclick: function () { if (!a.fn || a.fn() !== false) close(); } }, a.label)); });
+      box.appendChild(row);
+    }
+    ov.addEventListener('pointerdown', function (e) { if (e.target === ov && o.dismissable !== false) close(); });
+    document.addEventListener('keydown', key);
+    document.body.appendChild(ov);
+    var first = box.querySelector('input') || box.querySelector('.actions .btn.primary') || box.querySelector('button');
+    if (first) setTimeout(function () { first.focus(); }, 30);
+    return { close: close, box: box };
+  }
+  function confirmBox(msg, ok, okLabel) {
+    modal({ title: '', body: h('p', null, msg), actions: [{ label: t('cancel') }, { label: okLabel || t('ok'), cls: 'primary', fn: ok }] });
+  }
+  function prompt(title, value, ok) {
+    var inp = h('input', { type: 'text', value: value || '' });
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); m.box.querySelector('.actions .primary').click(); } });
+    var m = modal({ title: title, body: h('div', { class: 'field' }, inp), actions: [{ label: t('cancel') }, { label: t('save'), cls: 'primary', fn: function () { return ok(inp.value.trim()); } }] });
+  }
+
+  /* ---------- chrome ---------- */
+  function chrome() {
+    document.getElementById('brandTitle').textContent = t('appTitle');
+    document.querySelector('#navGuide .lbl').textContent = t('guide');
+    document.querySelector('#navSettings .lbl').textContent = t('settings');
+    document.getElementById('navGuide').setAttribute('aria-label', t('formatGuide'));
+    document.getElementById('navSettings').setAttribute('aria-label', t('settings'));
+    document.getElementById('langLbl').textContent = I18N.lang === 'en' ? 'EN' : 'မြန်မာ';
+    document.getElementById('brandBtn').setAttribute('aria-label', t('home'));
+  }
+  function go(r) {
+    if (current && current.destroy) current.destroy();
+    current = null; route = r; chrome(); U.clear(main);
+    window.scrollTo(0, 0);
+    if (r.name === 'home') home();
+    else if (r.name === 'exercise') exercise(r.setId, r.pos);
+    else if (r.name === 'summary') summary(r.setId);
+    else if (r.name === 'guide') guide();
+  }
+  function rerender() {
+    if (route.name === 'exercise' && current && current.pos != null) route.pos = current.pos;
+    go(route);
+  }
+
+  /* ---------- home / library ---------- */
+  function home() {
+    var wrap = h('div', { class: 'stack' });
+    wrap.appendChild(h('section', { class: 'card hero' },
+      mooSvg(), h('div', null, h('h1', null, t('welcome')), h('p', { class: 'muted', style: { margin: 0 } }, t('welcomeSub')))));
+    if (Store.backend === 'memory') wrap.appendChild(h('div', { class: 'warn', role: 'alert' }, '⚠ ' + t('noSave')));
+
+    var input = h('input', { type: 'file', multiple: true, accept: '.csv,.tsv,.txt,.xlsx,.zip', class: 'sr-only', id: 'fileIn', tabindex: '-1' });
+    input.addEventListener('change', function () { if (input.files.length) doImport(input.files); input.value = ''; });
+    var drop = h('div', { class: 'drop' },
+      h('p', { style: { margin: '0 0 .6rem' } }, '📥 ' + t('dropHint')),
+      h('button', { class: 'btn primary', type: 'button', onclick: function () { input.click(); } }, I18N.L('choose')), input);
+    ['dragenter', 'dragover'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+    ['dragleave', 'drop'].forEach(function (ev) { drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+    drop.addEventListener('drop', function (e) { if (e.dataTransfer && e.dataTransfer.files.length) doImport(e.dataTransfer.files); });
+    var rep = h('div', { id: 'importReport' });
+    wrap.appendChild(h('section', { class: 'card' }, h('h2', null, t('importTitle')), drop, rep));
+    if (lastImport) renderImport(rep, lastImport);
+
+    var lib = h('section', { 'aria-labelledby': 'libH' }, h('h2', { id: 'libH' }, t('library')));
+    var grid = h('div', { class: 'sets' }); lib.appendChild(grid); wrap.appendChild(lib);
+    main.appendChild(wrap);
+    Store.getSets().then(function (sets) {
+      if (!sets.length) { grid.appendChild(h('p', { class: 'muted' }, t('empty'))); return; }
+      sets.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+      sets.forEach(function (s) { Store.getProgress(s.id).then(function (p) { grid.appendChild(setCard(s, p)); }); });
+    });
+  }
+  function setCard(s, p) {
+    var n = s.exercises.length, d = 0;
+    s.exercises.forEach(function (ex) { var st = p.ex[ex.id]; if (st && st.done) d++; });
+    var card = h('article', { class: 'card set' });
+    card.appendChild(h('h3', null, s.name, ' ', s.builtIn ? h('span', { class: 'badge' }, t('builtIn')) : null));
+    card.appendChild(h('div', { class: 'muted' }, t('nExercises', { n: n }) + ' · ' + t('done', { d: d, n: n }) + (s.assets && s.assets.length ? ' · 📎 ' + t('mediaKept', { n: s.assets.length }) : '')));
+    var m = h('div', { class: 'meter', role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(n), 'aria-valuenow': String(d) }, h('i', { style: { width: (n ? d / n * 100 : 0) + '%' } }));
+    card.appendChild(m);
+    if (s.zawgyi) card.appendChild(h('div', { class: 'warn', role: 'alert' }, '⚠ ' + I18N.tIn('en', 'zawgyi'), h('span', { class: 'sub my', lang: 'my' }, I18N.tIn('my', 'zawgyi'))));
+    var repBox = null;
+    if (s.report && s.report.length) {
+      repBox = reportList(s.report); repBox.classList.add('hidden');
+      card.appendChild(h('button', { class: 'btn small', type: 'button', 'aria-expanded': 'false', onclick: function (e) { var hid = repBox.classList.toggle('hidden'); e.currentTarget.setAttribute('aria-expanded', String(!hid)); } }, '⚠ ' + t('report') + ' (' + s.report.length + ')'));
+      card.appendChild(repBox);
+    }
+    var row = h('div', { class: 'row' });
+    row.appendChild(h('button', { class: 'btn primary', type: 'button', onclick: function () { openSet(s.id, p.pos || 0); } }, I18N.L('open')));
+    row.appendChild(h('button', { class: 'btn small', type: 'button', onclick: function () { go({ name: 'summary', setId: s.id }); } }, t('summary')));
+    row.appendChild(h('button', { class: 'btn small', type: 'button', onclick: function () {
+      prompt(t('renamePrompt'), s.name, function (v) { if (!v) return false; s.name = v; Store.putSet(s).then(rerender); });
+    } }, t('rename')));
+    row.appendChild(h('button', { class: 'btn small danger', type: 'button', onclick: function () {
+      confirmBox(t('confirmDelete', { name: s.name }), function () { Store.deleteSet(s.id).then(rerender); }, t('del'));
+    } }, t('del')));
+    card.appendChild(row);
+    return card;
+  }
+  function reportList(report) {
+    var ul = h('ul', { class: 'errlist' });
+    report.slice(0, 200).forEach(function (r) { ul.appendChild(h('li', { class: r.lv }, t(r.k, r.p))); });
+    return ul;
+  }
+  function doImport(files) {
+    var rep = document.getElementById('importReport');
+    if (rep) U.clear(rep).appendChild(h('p', { class: 'muted' }, t('importing')));
+    Importer.importFiles(files).then(function (results) { lastImport = results; go({ name: 'home' }); })
+      .catch(function () { toast(t('unsupported', { name: '' })); });
+  }
+  function renderImport(box, results) {
+    results.forEach(function (r) {
+      if (r.error) { box.appendChild(h('div', { class: 'warn' }, t(r.error.k, r.error.p))); return; }
+      if (!r.sets || !r.sets.length) { box.appendChild(h('div', { class: 'warn' }, t('importNone', { name: r.name }))); return; }
+      r.sets.forEach(function (s) {
+        var d = h('div', { style: { marginTop: '.6rem' } }, h('strong', null, (s.exercises.length ? '✅ ' : '⛔ ') + t('importDone', { name: s.name, ok: s.exercises.length, bad: s.skipped || 0 })));
+        if (s.zawgyi) d.appendChild(h('div', { class: 'warn' }, '⚠ ' + t('zawgyi')));
+        if (s.report.length) d.appendChild(reportList(s.report));
+        box.appendChild(d);
+      });
+      if (r.assets) box.appendChild(h('p', { class: 'muted' }, t('assetsKept', { n: r.assets })));
+    });
+  }
+  function mooSvg(cls) {
+    var ns = 'http://www.w3.org/2000/svg', s = document.createElementNS(ns, 'svg'), u = document.createElementNS(ns, 'use');
+    s.setAttribute('class', cls || 'moo'); s.setAttribute('viewBox', '0 0 120 120'); s.setAttribute('aria-hidden', 'true');
+    u.setAttribute('href', '#moo'); s.appendChild(u); return s;
+  }
+
+  /* ---------- exercise ---------- */
+  function openSet(id, pos) {
+    if (!Settings.get('askedName')) {
+      askName(function () { go({ name: 'exercise', setId: id, pos: pos }); });
+    } else go({ name: 'exercise', setId: id, pos: pos });
+  }
+  function askName(next) {
+    var inp = h('input', { type: 'text', placeholder: t('namePh'), autocomplete: 'name', maxlength: '60' });
+    var done = function (v) { Settings.set('askedName', true); Settings.set('studentName', v || ''); setTimeout(next, 0); };
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); m.close(); done(inp.value.trim()); } });
+    var m = modal({ title: t('nameTitle'), dismissable: false, body: [h('p', { class: 'muted' }, t('nameHelp')), h('div', { class: 'field' }, inp)],
+      actions: [{ label: t('skip'), fn: function () { done(''); } }, { label: t('save'), cls: 'primary', fn: function () { done(inp.value.trim()); } }] });
+  }
+  function exercise(setId, pos) {
+    Promise.all([Store.getSets(), Store.getProgress(setId)]).then(function (r) {
+      var set = r[0].filter(function (s) { return s.id === setId; })[0], prog = r[1];
+      if (!set || !set.exercises.length) { go({ name: 'home' }); return; }
+      pos = Math.max(0, Math.min(set.exercises.length - 1, pos || 0));
+      prog.pos = pos; Store.putProgress(setId, prog);
+      var ex = set.exercises[pos], act = Registry.get(ex.type);
+      var doneN = set.exercises.filter(function (e) { return prog.ex[e.id] && prog.ex[e.id].done; }).length;
+      var head = h('div', { class: 'exhead' },
+        h('button', { class: 'iconbtn', type: 'button', onclick: function () { go({ name: 'home' }); }, 'aria-label': t('home') }, h('span', { 'aria-hidden': 'true' }, '🏠')),
+        h('div', { class: 'title' }, h('div', { style: { fontWeight: 800 } }, set.name + ' · ' + t('of', { i: pos + 1, n: set.exercises.length })),
+          h('div', { class: 'meter', role: 'progressbar', 'aria-label': t('done', { d: doneN, n: set.exercises.length }), 'aria-valuemin': '0', 'aria-valuemax': String(set.exercises.length), 'aria-valuenow': String(doneN) },
+            h('i', { style: { width: doneN / set.exercises.length * 100 + '%' } }))),
+        h('button', { class: 'btn small', type: 'button', disabled: pos === 0, onclick: function () { go({ name: 'exercise', setId: setId, pos: pos - 1 }); } }, '◀', h('span', { class: 'nl' }, ' ' + t('prev'))),
+        h('button', { class: 'btn small', type: 'button', disabled: pos >= set.exercises.length - 1, onclick: function () { go({ name: 'exercise', setId: setId, pos: pos + 1 }); } }, h('span', { class: 'nl' }, t('next') + ' '), '▶'),
+        h('button', { class: 'btn small', type: 'button', onclick: function () { go({ name: 'summary', setId: setId }); } }, '📊', h('span', { class: 'nl' }, ' ' + t('summary'))));
+      var mount = h('div');
+      main.appendChild(head); main.appendChild(mount);
+      var saveP = U.debounce(function () { Store.putProgress(setId, prog); }, 250);
+      var ctrl = act.render({
+        mount: mount, exercise: ex, index: pos, state: prog.ex[ex.id],
+        save: function (st) { prog.ex[ex.id] = st; saveP(); },
+        announce: announce,
+        gate: teacherGate,
+        onResult: function (st) { prog.ex[ex.id] = st; Store.putProgress(setId, prog); result(set, pos, st, ctrl); }
+      });
+      if (!prog.ex[ex.id]) { prog.ex[ex.id] = ctrl.state(); saveP(); }
+      current = { destroy: ctrl.destroy, pos: pos };
+    });
+  }
+  function teacherGate(fn) {
+    var pin = Settings.get('pin');
+    if (!pin) { confirmBox(t('confirmShow'), fn); return; }
+    var inp = h('input', { type: 'password', inputmode: 'numeric', maxlength: '4', autocomplete: 'off', 'aria-label': t('enterPin') });
+    var msg = h('p', { class: 'muted', role: 'alert' });
+    var tryIt = function () { if (inp.value === pin) { fn(); return true; } msg.textContent = t('wrongPin'); inp.value = ''; inp.focus(); return false; };
+    inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); if (tryIt()) m.close(); } });
+    var m = modal({ title: t('enterPin'), body: [h('div', { class: 'field' }, inp), msg], actions: [{ label: t('cancel') }, { label: t('ok'), cls: 'primary', fn: tryIt }] });
+  }
+  function result(set, pos, st, ctrl) {
+    var last = pos >= set.exercises.length - 1, title = st.revealed ? t('answersShown') : st.done ? (st.score === st.total && st.stars === 3 ? t('perfect') : t('greatJob')) : t('keepGoing');
+    var stars = h('div', { class: 'stars', 'aria-label': st.stars + ' / 3 ' + t('stars') });
+    for (var i = 1; i <= 3; i++) stars.appendChild(h('span', { class: i <= st.stars ? '' : 'off', 'aria-hidden': 'true' }, '⭐'));
+    var instantMode = Settings.get('feedback') === 'instant';
+    var body = h('div', { class: 'result' }, mooSvg(), stars,
+      h('div', { class: 'stats' },
+        h('div', null, h('b', null, st.score + '/' + st.total), t('score')),
+        h('div', null, h('b', null, String(instantMode ? st.mistakes : st.attempts)), instantMode ? t('mistakes') : t('attempts')),
+        h('div', null, h('b', null, String(st.hintsTotal)), t('hints'))),
+      !st.done ? h('p', { class: 'muted' }, t('tryAgainHelp')) : null);
+    var actions = [];
+    if (!st.done) actions.push({ label: t('tryAgain'), cls: 'primary', fn: function () { ctrl.tryAgain(); } });
+    actions.push({ label: t('restart'), fn: function () { ctrl.restart(); } });
+    if (st.done && !last) actions.push({ label: t('next') + ' ▶', cls: 'good', fn: function () { go({ name: 'exercise', setId: set.id, pos: pos + 1 }); } });
+    if (st.done && last) actions.push({ label: '📊 ' + t('summary'), cls: 'good', fn: function () { go({ name: 'summary', setId: set.id }); } });
+    actions.push({ label: t('close') });
+    modal({ title: title, body: body, actions: actions });
+    if (st.done && !st.revealed) confetti();
+  }
+  function confetti() {
+    if (U.reducedMotion()) return;
+    var box = h('div', { class: 'confetti', 'aria-hidden': 'true' }), cols = ['#3ee6ff', '#9b7bff', '#ff6fb1', '#ffd447', '#3ddc97'];
+    for (var i = 0; i < 42; i++) box.appendChild(h('i', { style: { left: Math.random() * 100 + '%', background: cols[i % 5], animationDuration: 1.6 + Math.random() * 1.6 + 's', animationDelay: Math.random() * 0.5 + 's' } }));
+    document.body.appendChild(box); setTimeout(function () { box.remove(); }, 4200);
+  }
+
+  /* ---------- summary + export ---------- */
+  function summary(setId) {
+    Promise.all([Store.getSets(), Store.getProgress(setId)]).then(function (r) {
+      var set = r[0].filter(function (s) { return s.id === setId; })[0], prog = r[1];
+      if (!set) { go({ name: 'home' }); return; }
+      var tb = h('table', { class: 'tbl' }), thead = h('tr');
+      ['#', t('exercise'), t('score'), t('stars'), t('attempts'), t('hints'), t('status')].forEach(function (x) { thead.appendChild(h('th', { scope: 'col' }, x)); });
+      tb.appendChild(h('thead', null, thead));
+      var body = h('tbody');
+      set.exercises.forEach(function (ex, i) {
+        var st = prog.ex[ex.id], status = !st || (!st.attempts && !Object.keys(st.place || {}).length) ? t('notStarted') : st.done ? t('completed') : t('inProgress');
+        body.appendChild(h('tr', null, h('td', null, String(i + 1)),
+          h('td', null, h('button', { class: 'btn small', type: 'button', onclick: function () { openSet(setId, i); } }, ex.title || t('exercise') + ' ' + (i + 1))),
+          h('td', null, st ? st.score + '/' + st.total : '-'), h('td', null, st && st.stars ? '⭐'.repeat(st.stars) : '-'),
+          h('td', null, st ? String(st.attempts || 0) : '-'), h('td', null, st ? String(st.hintsTotal || 0) : '-'), h('td', null, status)));
+      });
+      tb.appendChild(body);
+      main.appendChild(h('section', { class: 'card stack' },
+        h('div', { class: 'row' }, mooSvg('moo'), h('div', null, h('h1', null, t('summary')), h('div', { class: 'muted' }, set.name + (Settings.get('studentName') ? ' · ' + Settings.get('studentName') : '')))),
+        h('div', { class: 'tablewrap' }, tb),
+        h('div', { class: 'row' },
+          h('button', { class: 'btn primary', type: 'button', onclick: function () { exportCsv(set, prog); } }, I18N.L('exportCsv')),
+          h('button', { class: 'btn', type: 'button', onclick: function () { go({ name: 'home' }); } }, t('back')))));
+      main.querySelector('svg.moo').style.width = '72px'; main.querySelector('svg.moo').style.height = '72px';
+    });
+  }
+  function exportCsv(set, prog) {
+    var rows = [['name', 'set', 'exercise', 'score', 'attempts', 'hints', 'date']];
+    set.exercises.forEach(function (ex, i) {
+      var st = prog.ex[ex.id]; if (!st) return;
+      var d = new Date(st.updatedAt || Date.now()), pad = function (x) { return (x < 10 ? '0' : '') + x; };
+      rows.push([Settings.get('studentName') || '', set.name, ex.title || 'Exercise ' + (i + 1), st.score + '/' + st.total, st.attempts || 0, st.hintsTotal || 0,
+        d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes())]);
+    });
+    var safe = set.name.replace(/[\\/:*?"<>|]+/g, '_');
+    U.download('results-' + safe + '.csv', CSV.stringify(rows), 'text/csv;charset=utf-8');
+  }
+
+  /* ---------- settings ---------- */
+  function settings() {
+    function seg(key, opts) {
+      var g = h('div', { class: 'seg', role: 'group' });
+      opts.forEach(function (o) {
+        g.appendChild(h('button', { type: 'button', 'aria-pressed': String(Settings.get(key) === o.v), onclick: function () {
+          Settings.set(key, o.v); g.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', 'false'); }); this.setAttribute('aria-pressed', 'true');
+          if (key === 'lang' || key === 'feedback') { m.close(); rerender(); settings(); }
+        } }, o.l));
+      });
+      return g;
+    }
+    function fld(label, ctl, help) { return h('div', { class: 'field' }, h('label', null, label), ctl, help ? h('small', { class: 'muted' }, help) : null); }
+    var fsOut = h('span', { class: 'badge' }, Math.round(Settings.get('fs') * 100) + '%');
+    function fs(d) { var v = Math.max(0.8, Math.min(1.7, Math.round((Settings.get('fs') + d) * 100) / 100)); Settings.set('fs', v); fsOut.textContent = Math.round(v * 100) + '%'; }
+    var nameIn = h('input', { type: 'text', value: Settings.get('studentName') || '', maxlength: '60' });
+    nameIn.addEventListener('change', function () { Settings.set('studentName', nameIn.value.trim()); Settings.set('askedName', true); });
+    var pinIn = h('input', { type: 'password', inputmode: 'numeric', maxlength: '4', value: Settings.get('pin') || '', autocomplete: 'off' });
+    var pinMsg = h('small', { class: 'muted', role: 'alert' });
+    var onoff = [{ v: true, l: t('on') }, { v: false, l: t('off') }];
+    var m = modal({
+      title: t('settings'),
+      body: [
+        fld(t('fontSize'), h('div', { class: 'row' }, h('button', { class: 'btn small', type: 'button', onclick: function () { fs(-0.1); }, 'aria-label': 'A-' }, 'A−'), fsOut, h('button', { class: 'btn small', type: 'button', onclick: function () { fs(0.1); }, 'aria-label': 'A+' }, 'A+'))),
+        fld(t('language'), seg('lang', [{ v: 'en', l: 'English' }, { v: 'my', l: 'မြန်မာ' }])),
+        fld(t('feedbackMode'), seg('feedback', [{ v: 'end', l: t('endMode') }, { v: 'instant', l: t('instantMode') }])),
+        fld(t('sound'), seg('sound', onoff)), fld(t('haptics'), seg('haptics', onoff)), fld(t('reducedMotion'), seg('reducedMotion', onoff)),
+        fld(t('studentName'), nameIn), fld(t('pin'), pinIn, t('pinHelp')), pinMsg,
+        h('p', { class: 'muted' }, 'v' + APP_VERSION + ' · ' + (Store.backend === 'memory' ? t('noSave') : Store.backend === 'idb' ? t('savedIdb') : t('localOnly')))
+      ],
+      actions: [{ label: t('ok'), cls: 'primary', fn: function () {
+        var v = pinIn.value.trim();
+        if (v && !/^\d{4}$/.test(v)) { pinMsg.textContent = t('pinInvalid'); return false; }
+        Settings.set('pin', v); Settings.set('studentName', nameIn.value.trim());
+      } }]
+    });
+  }
+
+  function guide() { Guide.render(main); }
+
+  return { go: go, rerender: rerender, toast: toast, modal: modal, announce: announce, settings: settings, mooSvg: mooSvg, confirm: confirmBox,
+    get route() { return route; } };
+})();
+
+/* ============================== guide (EN / MY) ============================== */
+var Guide = (function () {
+  var EX_A = 'paragraph,answers,distractors\n"I ___(1)___ at 6.00. I ___(2)___ my teeth.",get up~wake up|brush,sleep|swim';
+  var EX_B = 'paragraph,answers\n"We {{1}} English. Our teacher __(2)__ a story.",2=reads|1=study';
+  var EX_C = 'paragraph,answer1,answer2\n"My cat ___(1)___ milk. It (2)*** on my bed.",drinks,sleeps';
+  var EX_MARK = '___(1)___   (2)   (3)________   (4)***   __(5)__   {{6}}   ______\n\\(7) = normal text "(7)"   (see page 2) = normal text';
+  var EX_RICH = '**bold**  *italic*  ++underline++  <b>bold</b>  <i>italic</i>  <u>underline</u>\nLine 1\\nLine 2   or   Line 1<br>Line 2\n$3 \\times 4 = 12$   $$\\frac{1}{2}$$\n| Day | Subject |\n|---|---|\n| Monday | (1) |';
+  var EX_ESC = 'answers: rock \\| roll|A \\~ B~A or B\npipe inside answer = \\|     tilde inside answer = \\~';
+  var EX_ZIP = 'my-lessons.zip\n├── unit1.csv\n├── unit2.xlsx        (every sheet = one set)\n└── media/            (kept for future versions)\n    ├── cat.png\n    └── song.mp3';
+  var COLS = 'id · type · title · instruction · paragraph* · answers* · answer1..N · distractors · hint · explanation · tags · level · shuffle · image · audio · model3d';
+  var C = {
+    en: [
+      ['1. Columns', 'One row = one exercise. Headers are not case-sensitive. * = required. "text", "passage" or "question" also work for paragraph; "answer" or "key" for answers.', COLS],
+      ['2. Answer format A: in order', 'Answers in blank order, separated by |. Use ~ for other accepted answers (the first one is shown on the block).', EX_A],
+      ['3. Answer format B: numbered', 'Write number=answer. Any order is fine.', EX_B],
+      ['4. Answer format C: one column per blank', 'Use columns answer1, answer2, ...', EX_C],
+      ['5. Blank markers', 'All of these are blanks. A bare (n) is a blank only when n is between 1 and the number of answers. ______ without a number gets the next number.', EX_MARK],
+      ['6. Escapes', 'Put \\ before | or ~ to use them inside an answer.', EX_ESC],
+      ['7. Rich text', 'Works in paragraph, instruction, hint and explanation. Other HTML is shown as plain text.', EX_RICH],
+      ['8. .xlsx and .zip', 'In .xlsx every sheet becomes one set. A .zip can hold many .csv/.xlsx files; other files are kept for future media features.', EX_ZIP],
+      ['9. Save as CSV UTF-8', 'Excel: File > Save As > "CSV UTF-8 (Comma delimited)". Google Sheets: File > Download > Comma-separated values (.csv). Use Myanmar Unicode, not Zawgyi.', null]
+    ],
+    my: [
+      ['၁။ ကော်လံများ', 'အတန်း (row) တစ်ခု = လေ့ကျင့်ခန်း တစ်ခု။ ခေါင်းစဉ်ကို အကြီးအသေး မခွဲပါ။ * = မဖြစ်မနေ လိုသည်။ paragraph အစား text, passage, question ကိုလည်း သုံးနိုင်သည်။ answers အစား answer, key ကိုလည်း သုံးနိုင်သည်။', COLS],
+      ['၂။ အဖြေပုံစံ A - အစဉ်လိုက်', 'ကွက်လပ် အစဉ်အတိုင်း အဖြေများကို | ဖြင့် ခြားပါ။ လက်ခံနိုင်သော အခြားအဖြေအတွက် ~ ကို သုံးပါ (ပထမအဖြေကို အဖြေတုံးပေါ်တွင် ပြမည်)။', EX_A],
+      ['၃။ အဖြေပုံစံ B - နံပါတ်တပ်', 'နံပါတ်=အဖြေ ဟု ရေးပါ။ အစဉ်လိုက် မဖြစ်လည်း ရသည်။', EX_B],
+      ['၄။ အဖြေပုံစံ C - ကွက်လပ်တစ်ခုလျှင် ကော်လံတစ်ခု', 'answer1, answer2, ... ကော်လံများကို သုံးပါ။', EX_C],
+      ['၅။ ကွက်လပ် အမှတ်အသားများ', 'အောက်ပါ အားလုံးသည် ကွက်လပ်ဖြစ်သည်။ ရိုးရိုး (n) သည် n က 1 နှင့် အဖြေအရေအတွက်ကြား ဖြစ်မှသာ ကွက်လပ်ဖြစ်သည်။ နံပါတ်မပါသော ______ သည် နောက်နံပါတ်ကို ရမည်။', EX_MARK],
+      ['၆။ Escape', 'အဖြေထဲတွင် | သို့မဟုတ် ~ ကို စာလုံးအဖြစ် သုံးလိုလျှင် ရှေ့တွင် \\ ထည့်ပါ။', EX_ESC],
+      ['၇။ စာသားပုံစံ', 'paragraph, instruction, hint, explanation တို့တွင် သုံးနိုင်သည်။ အခြား HTML များကို ရိုးရိုးစာအဖြစ်သာ ပြမည်။', EX_RICH],
+      ['၈။ .xlsx နှင့် .zip', '.xlsx တွင် sheet တစ်ခုစီသည် အစုတစ်ခု ဖြစ်မည်။ .zip ထဲတွင် .csv/.xlsx ဖိုင်များစွာ ထည့်နိုင်သည်။ အခြားဖိုင်များကို နောင် media အတွက် သိမ်းထားမည်။', EX_ZIP],
+      ['၉။ CSV UTF-8 အဖြစ် သိမ်းနည်း', 'Excel - File > Save As > "CSV UTF-8 (Comma delimited)"။ Google Sheets - File > Download > Comma-separated values (.csv)။ ဇော်ဂျီ မဟုတ်ဘဲ မြန်မာ ယူနီကုဒ်ကို သုံးပါ။', null]
+    ]
+  };
+  function sampleWorkbook() {
+    var wb = XLSX.utils.book_new();
+    BUILTIN.forEach(function (b, i) { XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(builtinToRows(b)), i ? 'School Life' : 'Daily Routine'); });
+    return wb;
+  }
+  function need(lib, ok) { if (!ok) { UI.toast(t('needLib', { lib: lib })); return false; } return true; }
+  var DL = {
+    csv: function () { U.download('fill-blank-template.csv', CSV.stringify(TEMPLATE_ROWS), 'text/csv;charset=utf-8'); },
+    xlsx: function () {
+      if (!need('SheetJS', window.XLSX)) return;
+      var wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(TEMPLATE_ROWS), 'Exercises');
+      XLSX.writeFile(wb, 'fill-blank-template.xlsx');
+    },
+    sampleX: function () { if (need('SheetJS', window.XLSX)) XLSX.writeFile(sampleWorkbook(), 'sample.xlsx'); },
+    sampleZ: function () {
+      if (!need('SheetJS', window.XLSX) || !need('JSZip', window.JSZip)) return;
+      var z = new JSZip();
+      z.file('sample.csv', CSV.stringify(builtinToRows(BUILTIN[1])));
+      z.file('sample.xlsx', XLSX.write(sampleWorkbook(), { type: 'array', bookType: 'xlsx' }));
+      z.file('media/README.txt', 'Media files (images, audio, 3D) are kept for future versions of the app.\n');
+      z.generateAsync({ type: 'blob' }).then(function (b) { U.download('sample.zip', b); });
+    }
+  };
+  function render(main) {
+    var box = h('section', { class: 'card guide' }, h('h1', null, '📘 ' + t('formatGuide')));
+    var dl = h('div', { class: 'row' });
+    [['dlCsv', 'csv', 'primary'], ['dlXlsx', 'xlsx'], ['dlSampleX', 'sampleX'], ['dlSampleZ', 'sampleZ']].forEach(function (d) {
+      dl.appendChild(h('button', { class: 'btn small ' + (d[2] || ''), type: 'button', onclick: DL[d[1]] }, t(d[0])));
+    });
+    box.appendChild(dl);
+    (C[I18N.lang] || C.en).forEach(function (sec) {
+      box.appendChild(h('h2', null, sec[0]));
+      box.appendChild(h('p', null, sec[1]));
+      if (sec[2]) {
+        var pre = h('pre', { class: 'code', tabindex: '0' }, sec[2]);
+        box.appendChild(pre);
+        box.appendChild(h('button', { class: 'btn small', type: 'button', onclick: function (e) { var b = e.currentTarget; U.copyText(sec[2]).then(function () { b.textContent = t('copied'); setTimeout(function () { b.textContent = t('copy'); }, 1500); }); } }, t('copy')));
+      }
+    });
+    box.appendChild(h('div', { class: 'row', style: { marginTop: '1.2rem' } }, h('button', { class: 'btn', type: 'button', onclick: function () { UI.go({ name: 'home' }); } }, t('back'))));
+    main.appendChild(box);
+  }
+  return { render: render, DL: DL };
+})();
+
+/* ============================== pwa ==============================
+   Service Worker only over http(s); skipped silently on file://.   */
+var PWA = (function () {
+  function init() {
+    if (!('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return;
+    var reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function () { if (reloading) return; reloading = true; location.reload(); });
+    navigator.serviceWorker.register('sw.js', { scope: './' }).then(function (reg) {
+      function prompt(w) { UI.toast(t('updateAvail'), { label: t('reload'), fn: function () { w.postMessage({ type: 'SKIP_WAITING' }); } }, 0); }
+      if (reg.waiting && navigator.serviceWorker.controller) prompt(reg.waiting);
+      reg.addEventListener('updatefound', function () {
+        var w = reg.installing; if (!w) return;
+        w.addEventListener('statechange', function () {
+          if (w.state === 'installed') { if (navigator.serviceWorker.controller) prompt(w); else UI.toast(t('offlineReady')); }
+        });
+      });
+    }).catch(function () {});
+  }
+  return { init: init };
+})();
+
+/* ============================== boot ============================== */
+(function boot() {
+  Settings.apply();
+  document.getElementById('brandBtn').addEventListener('click', function () { UI.go({ name: 'home' }); });
+  document.getElementById('navGuide').addEventListener('click', function () { UI.go({ name: 'guide' }); });
+  document.getElementById('navSettings').addEventListener('click', function () { UI.settings(); });
+  document.getElementById('navLang').addEventListener('click', function () { Settings.set('lang', I18N.lang === 'en' ? 'my' : 'en'); UI.rerender(); });
+  var p = Store.ready().then(function () {
+    if (Store.getKVSync('seeded', false)) return;
+    return BUILTIN.reduce(function (q, b, i) {
+      return q.then(function () {
+        var s = Importer.rowsToSet(builtinToRows(b), b.name, 'built-in');
+        s.id = b.id; s.builtIn = true; s.createdAt = Date.now() - i * 1000;
+        return Store.putSet(s);
+      });
+    }, Promise.resolve()).then(function () { Store.putKVSync('seeded', true); });
+  });
+  p.then(function () { UI.go({ name: 'home' }); PWA.init(); });
+})();
+</script>
+</body>
+</html>

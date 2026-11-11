@@ -1,0 +1,5 @@
+﻿id,type,title,instruction,paragraph,answers,answer1,answer2,answer3,distractors,hint,explanation,tags,level,shuffle,image,audio,model3d
+ex1,fill_blank,My Morning (format A),Choose the correct words.,"I ___(1)___ at 6.00.
+I ___(2)___ my teeth and then I (3) breakfast.",get up~wake up|brush|have~eat,,,,sleep|swim,Think about your morning.,We use the **present simple** for routines.,routine,Grade 5,yes,,,
+ex2,fill_blank,At School (format B),Fill in the blanks.,We {{1}} English on Monday. Our teacher __(2)__ us a story.,2=reads|1=study~learn,,,,eats,,,school,Grade 5,no,,,
+ex3,fill_blank,Pets (format C),,My cat ___(1)___ milk. It (2)*** on my bed. It likes to ___(3)___.,,drinks,sleeps,play,barks|flies,,,animals,Grade 5,yes,,,
